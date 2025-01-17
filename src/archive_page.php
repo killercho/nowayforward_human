@@ -42,9 +42,19 @@
     }
 
     $WEBSITE_CATEGORY = 'page_url';
+    $DATABASE_NAME = 'db';
+    $TABLE_NAME = 'users';
     $website_url = $_POST[$WEBSITE_CATEGORY];
     $website_exists = does_website_exist($website_url) ? "true" : "false";
-    echo "Website exists: $website_exists";
+    echo "Website exists: $website_exists" . "<br/>";
+
+    try {
+        $db = new PDO("mysql:host=localhost;dbname=$DATABASE_NAME", $user, $password);
+        echo $db->query("DESCRIBE $TABLE_NAME");
+    } catch (PDOException $e) {
+        print "Error!: " . $e->getMessage() . "<br/>";
+        die();
+    }
 ?>
 </p>
 </body>
