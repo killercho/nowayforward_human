@@ -1,26 +1,45 @@
-SET @username = 'default';
-SET @password = 'Password1234';
+CREATE DATABASE IF NOT EXISTS nwfh;
+USE nwfh;
 
--- Check if the user exists
-SELECT COUNT(*) INTO @user_exists
-FROM mysql.user
-WHERE user = @username AND host = 'localhost';
+CREATE TABLE IF NOT EXISTS Users (
+    UID      INT                   NOT NULL AUTO_INCREMENT,
+    Username VARCHAR(50)           NOT NULL UNIQUE,
+    Password VARCHAR(50)           NOT NULL,
+    Role     ENUM('User', 'Admin') NOT NULL,
+    PRIMARY KEY (UID)
+);
 
--- Create the user if it does not exist
-IF @user_exists = 0 THEN
-    CREATE USER @username@'localhost' IDENTIFIED BY @password;
-END IF;
+CREATE TABLE IF NOT EXISTS Cookies (
+    UID     INT NOT NULL AUTO_INCREMENT,
+    Token   CHAR(32) NOT NULL,
+    Expires DATETIME,
+    PRIMARY KEY (UID, Token),
+    FOREIGN KEY (UID) REFERENCES Users(UID)
+);
 
-GRANT ALL PRIVILEGES ON db.* TO @username@'localhost';
-FLUSH PRIVILEGES;
+CREATE TABLE IF NOT EXISTS Webpage (
+    WID          INT          NOT NULL AUTO_INCREMENT,
+    Path         VARCHAR(512) NOT NULL UNIQUE,
+    URL          VARCHAR(512) NOT NULL,
+    Date         DATETIME     NOT NULL,
+    Visits       INT          NOT NULL,
+    RequesterUID INT          NOT NULL,
+    PRIMARY KEY (WID),
+    FOREIGN KEY (RequesterUID) REFERENCES Users(UID)
+);
 
--- Create the database if it does not exist
-CREATE DATABASE IF NOT EXISTS db;
-USE db;
+CREATE TABLE IF NOT EXISTS ArchiveLists (
+    LID         INT         NOT NULL AUTO_INCREMENT,
+    AuthorUID   INT         NOT NULL,
+    Name        VARCHAR(64) NOT NULL,
+    Description VARCHAR(255),
+    PRIMARY KEY (LID),
+    FOREIGN KEY (AuthorUID) REFERENCES Users(UID)
+);
 
--- Create the users table if it does not exist
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
+CREATE TABLE IF NOT EXISTS ArchiveListsWebpages (
+    WID      INT NOT NULL,
+    LID      INT NOT NULL,
+    Position INT NOT NULL,
+    PRIMARY KEY (WID, LID)
 );
