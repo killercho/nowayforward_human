@@ -7,6 +7,7 @@ let
     gettext,
     mariadb,
     apacheHttpd,
+    php,
     ...
   }:
   mkShell {
@@ -14,6 +15,7 @@ let
       gettext
       mariadb
       apacheHttpd
+      php
     ];
 
     # Thanks https://github.com/JianZcar/LAMP-nix-shell-env/blob/main/default.nix
@@ -26,7 +28,8 @@ let
       : ''${SERVER_PORT:=8000}
       : ''${ROOT_DIR:=$HOME/.config/apache}
       : ''${REPOSITORY:=${builtins.getEnv "PWD"}}
-      export SERVER_ROOT SERVER_PORT ROOT_DIR REPOSITORY
+      : ''${PHP_FPM_SOCKET:=$ROOT_DIR/php-fpm.sock}
+      export SERVER_ROOT SERVER_PORT ROOT_DIR REPOSITORY PHP_FPM_SOCKET
 
       if [ ! -d "$ROOT_DIR" ]
       then
@@ -46,10 +49,31 @@ let
               cp "./apache/$file" "$ROOT_DIR/$file"
             fi
           done
+
+          cat <<EOF >"$ROOT_DIR/php-fpm.conf"
+      [global]
+      error_log = $ROOT_DIR/php-fpm.error.log
+      pid = $ROOT_DIR/php-fpm.pid
+
+      [www]
+      listen = $PHP_FPM_SOCKET
+      listen.owner = $USER
+      listen.group = users
+      listen.mode = 0660
+
+      pm = dynamic
+      pm.max_children = 5
+      pm.start_servers = 2
+      pm.min_spare_servers = 1
+      pm.max_spare_servers = 3
+      EOF
       fi
 
       echo 'Starting httpd...'
       httpd -f $ROOT_DIR/httpd.conf
+
+      php-fpm -y $ROOT_DIR/php-fpm.conf -F >/dev/null 2>&1 &
+      PHP_FPM_PID=$!
 
       #
       # Database
@@ -115,6 +139,7 @@ let
 
       echo 'Shutting down httpd...'
       httpd -f $ROOT_DIR/httpd.conf -k stop
+      kill $PHP_FPM_PID
 
       # Stop mysql
       echo 'Shutting down mysql...'
