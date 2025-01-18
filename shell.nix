@@ -4,18 +4,57 @@ let
   shellDrv =
   {
     mkShell,
+    gettext,
     mariadb,
     apacheHttpd,
     ...
   }:
   mkShell {
     nativeBuildInputs = [
+      gettext
       mariadb
       apacheHttpd
     ];
 
     # Thanks https://github.com/JianZcar/LAMP-nix-shell-env/blob/main/default.nix
     shellHook = ''
+      #
+      # Apache2
+      #
+
+      : ''${SERVER_ROOT:=${apacheHttpd}}
+      : ''${SERVER_PORT:=8000}
+      : ''${ROOT_DIR:=$HOME/.config/apache}
+      : ''${REPOSITORY:=${builtins.getEnv "PWD"}}
+      export SERVER_ROOT SERVER_PORT ROOT_DIR REPOSITORY
+
+      if [ ! -d "$ROOT_DIR" ]
+      then
+          echo 'Installing apache config...'
+          mkdir -p "$ROOT_DIR"
+          for file in $(find ./apache -type f)
+          do
+            file="''${file#./apache/}"
+
+            dir="''${file%/*}"
+            [ "$dir" != "$file" ] && mkdir -p "$ROOT_DIR/$dir"
+
+            if [ "$file" != "''${file%.tpl}" ]
+            then
+              envsubst < "./apache/$file" > "$ROOT_DIR/''${file%.tpl}"
+            else
+              cp "./apache/$file" "$ROOT_DIR/$file"
+            fi
+          done
+      fi
+
+      echo 'Starting httpd...'
+      httpd -f $ROOT_DIR/httpd.conf
+
+      #
+      # Database
+      #
+
       : ''${MYSQL_HOME:="$HOME/.config/mysql"}
       : ''${MYSQL_DATADIR:="$MYSQL_HOME/data"}
       : ''${MYSQL_PID_FILE:="$MYSQL_HOME/mysql.pid"}
@@ -73,6 +112,9 @@ let
 
       # Start user's shell
       "$(getent passwd $USER | cut -d : -f 7)"
+
+      echo 'Shutting down httpd...'
+      httpd -f $ROOT_DIR/httpd.conf -k stop
 
       # Stop mysql
       echo 'Shutting down mysql...'
