@@ -20,9 +20,12 @@ let
 
     # Thanks https://github.com/JianZcar/LAMP-nix-shell-env/blob/main/default.nix
     shellHook = ''
-      #
-      # Apache2
-      #
+      : ''${MYSQL_HOME:="$HOME/.config/mysql"}
+      : ''${MYSQL_DATADIR:="$MYSQL_HOME/data"}
+      : ''${MYSQL_PID_FILE:="$MYSQL_HOME/mysql.pid"}
+      : ''${MYSQL_UNIX_SOCKET:="$MYSQL_HOME/mysql.sock"}
+      MYSQL_UNIX_PORT="$MYSQL_UNIX_SOCKET"
+      export MYSQL_UNIX_SOCKET MYSQL_UNIX_PORT
 
       : ''${SERVER_ROOT:=${apacheHttpd}}
       : ''${SERVER_PORT:=8000}
@@ -30,6 +33,10 @@ let
       : ''${REPOSITORY:=${builtins.getEnv "PWD"}}
       : ''${PHP_FPM_SOCKET:=$ROOT_DIR/php-fpm.sock}
       export SERVER_ROOT SERVER_PORT ROOT_DIR REPOSITORY PHP_FPM_SOCKET
+
+      #
+      # Apache2
+      #
 
       if [ ! -d "$ROOT_DIR" ]
       then
@@ -79,12 +86,6 @@ let
       # Database
       #
 
-      : ''${MYSQL_HOME:="$HOME/.config/mysql"}
-      : ''${MYSQL_DATADIR:="$MYSQL_HOME/data"}
-      : ''${MYSQL_PID_FILE:="$MYSQL_HOME/mysql.pid"}
-      : ''${MYSQL_UNIX_PORT:="$MYSQL_HOME/mysql.sock"}
-      export MYSQL_UNIX_PORT
-
       __first_time=""
       if [ ! -d "$MYSQL_HOME" ]
       then
@@ -111,7 +112,7 @@ let
         --basedir="${mariadb}"      \
         --datadir="$MYSQL_DATADIR"   \
         --pid-file="$MYSQL_PID_FILE" \
-        --socket="$MYSQL_UNIX_PORT"  \
+        --socket="$MYSQL_UNIX_SOCKET"  \
         --bind-address=0.0.0.0       \
         --log-error="$MYSQL_HOME"/mysql.err \
         --user="$USER" >>"$MYSQL_HOME"/mysql.log &
@@ -134,6 +135,15 @@ let
       fi
       unset __first_time
 
+      if ! mysql -e 'use nwfh;' >/dev/null 2>&1
+      then
+        echo 'nwfh database not found, applying migrations...'
+        for migration in ./migrations/*
+        do
+            mysql < "$migration" >/dev/null
+        done
+      fi
+
       # Start user's shell
       "$(getent passwd $USER | cut -d : -f 7)"
 
@@ -145,7 +155,7 @@ let
       echo 'Shutting down mysql...'
       mysqladmin \
         --user="root" \
-        --socket="$MYSQL_UNIX_PORT"  \
+        --socket="$MYSQL_UNIX_SOCKET"  \
         shutdown || pkill mysqld
 
       exit 0
