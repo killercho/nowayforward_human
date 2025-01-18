@@ -31,3 +31,4 @@ Group users
 AddType application/javascript .js
 
 SetEnv MYSQL_UNIX_SOCKET ${MYSQL_UNIX_SOCKET}
+SetEnv USER ${USER}
