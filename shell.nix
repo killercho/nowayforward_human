@@ -20,7 +20,10 @@ let
 
     # Thanks https://github.com/JianZcar/LAMP-nix-shell-env/blob/main/default.nix
     shellHook = ''
-      : ''${MYSQL_HOME:="$HOME/.config/mysql"}
+      : ''${REPOSITORY:=${builtins.toString ./.}}
+      export REPOSITORY
+
+      : ''${MYSQL_HOME:="$REPOSITORY/.config/mysql"}
       : ''${MYSQL_DATADIR:="$MYSQL_HOME/data"}
       : ''${MYSQL_PID_FILE:="$MYSQL_HOME/mysql.pid"}
       : ''${MYSQL_UNIX_SOCKET:="$MYSQL_HOME/mysql.sock"}
@@ -29,10 +32,9 @@ let
 
       : ''${SERVER_ROOT:=${apacheHttpd}}
       : ''${SERVER_PORT:=8000}
-      : ''${ROOT_DIR:=$HOME/.config/apache}
-      : ''${REPOSITORY:=${builtins.getEnv "PWD"}}
+      : ''${ROOT_DIR:=$REPOSITORY/.config/apache}
       : ''${PHP_FPM_SOCKET:=$ROOT_DIR/php-fpm.sock}
-      export SERVER_ROOT SERVER_PORT ROOT_DIR REPOSITORY PHP_FPM_SOCKET
+      export SERVER_ROOT SERVER_PORT ROOT_DIR PHP_FPM_SOCKET
 
       #
       # Apache2
