@@ -14,6 +14,7 @@ LoadModule authz_core_module modules/mod_authz_core.so
 LoadModule unixd_module modules/mod_unixd.so
 LoadModule mime_module modules/mod_mime.so
 LoadModule alias_module modules/mod_alias.so
+LoadModule env_module modules/mod_env.so
 #LoadModule log_config_module modules/mod_log_config.so
 
 Define ROOT ${ROOT_DIR}
@@ -28,3 +29,5 @@ User ${USER}
 Group users
 
 AddType application/javascript .js
+
+SetEnv MYSQL_UNIX_SOCKET ${MYSQL_UNIX_SOCKET}
