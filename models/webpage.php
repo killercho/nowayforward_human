@@ -20,7 +20,7 @@ class Webpage extends Table {
 
     static function fromDB(string $URL) : Webpage {
         return Table::_fromDB(
-            "SELECT * FROM Webpages WHERE URL = \"$URL\"",
+            "SELECT * FROM Webpages WHERE URL = \"$URL\" ORDER BY Date DESC LIMIT 1",
             "Database\Webpage"
         );
     }
@@ -30,6 +30,22 @@ class Webpage extends Table {
             'Webpages',
             'Database\Webpage',
             "GROUP BY URL ORDER BY Visits DESC, Date DESC LIMIT $count"
+        );
+    }
+
+    static function allArchives(string $URL) : array {
+        return Table::_get_all(
+            'Webpages',
+            'Database\Webpage',
+            "WHERE URL = \"$URL\" ORDER BY Date DESC"
+        );
+    }
+
+    function incrementVisits() {
+        Table::_update(
+            'Webpages',
+            "Visits = \"" . ($this->Visits + 1) . "\"",
+            "WID = \"{$this->WID}\""
         );
     }
 }
