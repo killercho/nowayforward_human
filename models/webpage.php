@@ -29,7 +29,8 @@ class Webpage extends Table {
         return Table::_get_all(
             'Webpages',
             'Database\Webpage',
-            "GROUP BY URL ORDER BY Visits DESC, Date DESC LIMIT $count"
+            "GROUP BY URL ORDER BY Visits DESC, Date DESC LIMIT $count",
+            'WID,Path,URL,Date,MAX(Visits) as Visits,RequesterUID'
         );
     }
 

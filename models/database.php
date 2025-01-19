@@ -39,9 +39,9 @@ abstract class Table {
         $conn = null;
     }
 
-    static protected function _get_all(string $table, string $class, string $additional = null) : array {
+    static protected function _get_all(string $table, string $class, string $additional = null, $columns = "*") : array {
         $conn = Table::connect();
-        $query = $conn->query("SELECT * FROM $table " . $additional);
+        $query = $conn->query("SELECT $columns FROM $table " . $additional);
         $conn = null;
 
         $query->setFetchMode(PDO::FETCH_CLASS, $class);
