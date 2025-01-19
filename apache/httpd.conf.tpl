@@ -15,6 +15,7 @@ LoadModule unixd_module modules/mod_unixd.so
 LoadModule mime_module modules/mod_mime.so
 LoadModule alias_module modules/mod_alias.so
 LoadModule env_module modules/mod_env.so
+LoadModule rewrite_module modules/mod_rewrite.so
 #LoadModule log_config_module modules/mod_log_config.so
 
 Define ROOT ${ROOT_DIR}
