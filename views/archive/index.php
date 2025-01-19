@@ -5,9 +5,7 @@
 ?>
 
 <?php if ($page !== null): ?>
-    <iframe>
-        <!-- /archives/$page->WID -->
-    </iframe>
+    <iframe src="<?php echo "/archives/{$page->WID}" ?>"></iframe>
     <?php foreach (Database\Webpage::allArchives($page->URL) as $page): ?>
         <section>
             <?php echo $page->Date ?>
