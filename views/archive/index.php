@@ -15,7 +15,7 @@
     <?php endforeach; ?>
 
 <?php else: ?>
-    <h2>This page hasn't been archived yet!</h2>
+    <h2>"<?php echo $_GET["page_url"] ?>" hasn't been archived yet!</h2>
     <form action="/sample_archive/index.php" method="POST">
         <input type="hidden" name="page_url" value="<?php echo $_GET["page_url"] ?>">
         <input type="submit" value="Archive Now!">
