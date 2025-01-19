@@ -6,11 +6,12 @@
     <meta name="theme-color" content="#2b2b2e">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles.css">
-    <title><?php echo htmlspecialchars($title ?? "");?></title>
+    <title><?php echo htmlspecialchars($title ?? "No Way Forward Human");?></title>
 </head>
 <body>
     <header>
         <nav>
+            <a href="/home/index.php">Home</a>
             <a href="/test/index.php">Test</a>
             <a href="/sample_archive/index.php">Sample Archive</a>
         </nav>

@@ -142,6 +142,10 @@ nav > *:hover {
   border-bottom: none;
 }
 
+nav > :first-child {
+  margin-right: 0.5em;
+}
+
 article > * {
   width: 100%;
 }
