@@ -24,7 +24,7 @@ class User extends Table {
     }
 
     static function get_all() : array {
-        return Table::_get_all("Database\User");
+        return Table::_get_all("Users", "Database\User");
     }
 }
 
@@ -48,6 +48,14 @@ class Webpage extends Table {
         return Table::_fromDB(
             "SELECT * FROM Webpages WHERE URL = \"$URL\"",
             "Database\Webpage"
+        );
+    }
+
+    static function mostVisited(int $count) : array {
+        return Table::_get_all(
+            'Webpages',
+            'Database\Webpage',
+            "GROUP BY URL ORDER BY Visits DESC, Date DESC LIMIT $count"
         );
     }
 }
@@ -82,9 +90,9 @@ abstract class Table {
         return $id;
     }
 
-    static protected function _get_all(string $class) : array {
+    static protected function _get_all(string $table, string $class, string $additional = null) : array {
         $conn = Table::connect();
-        $query = $conn->query("SELECT * FROM Users");
+        $query = $conn->query("SELECT * FROM $table " . $additional);
         $conn = null;
 
         $query->setFetchMode(PDO::FETCH_CLASS, $class);
