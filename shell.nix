@@ -40,6 +40,28 @@ let
       export ARCHIVES_DIR
 
       #
+      # Reseting
+      #
+
+      pkill httpd >/dev/null 2>&1
+      pkill php-fpm >/dev/null 2>&1
+      pkill mysqld >/dev/null 2>&1
+
+      read -t 2 -p "Nuke .config and .archives? [y/N] " NUKE
+      NUKE="''${NUKE,,}"
+      if [ "$NUKE" == 'y' -o "$NUKE" == 'yes' ]
+      then
+          echo 'Removing .config and .archives...'
+          rm -r "$MYSQL_HOME" "$ROOT_DIR" "$ARCHIVES_DIR"
+      elif [ -z "$NUKE" ]
+      then
+          echo no
+      elif ! [ "$NUKE" == 'n' -o "$NUKE" == 'no' ]
+      then
+          printf "Unknown responce '$NUKE', not nuking!"
+      fi
+
+      #
       # Apache2
       #
 
