@@ -16,10 +16,17 @@ class User extends Table {
         );
     }
 
-    function fromDB(string $username) : User {
+    static function fromDB(string $username) : User {
         return Table::_fromDB(
             "SELECT * FROM Users WHERE Username = \"$username\"",
-            "Database\User"
+            'Database\User'
+        );
+    }
+
+    static function fromDBuid(int $uid) : User {
+        return Table::_fromDB(
+            "SELECT * FROM Users WHERE UID = \"$uid\"",
+            'Database\User'
         );
     }
 
