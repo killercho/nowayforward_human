@@ -185,6 +185,10 @@ hr.new-section {
   transition-property: height;
 }
 
+.card * {
+  pointer-events: none;
+}
+
 .card:hover {
   cursor: pointer;
   height: calc(6.5em + var(--card-expand-with));

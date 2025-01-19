@@ -15,7 +15,7 @@
 <h1>Most popular archives</h1>
 
 <?php foreach(Database\Webpage::mostVisited(10) as $page): ?>
-    <section class="card">
+    <section class="card" onclick="open_archive('<?php echo $page->URL ?>')">
         <section class="quickinfo">
             <a href="<?php echo $page->URL ?>"><?php echo $page->URL ?></a>
             <span class="float-right"><?php echo $page->Date ?></span>
@@ -34,5 +34,10 @@
 
 <div class="card-blank-afterspace"></div>
 
-<?php end_page(); ?>
+<script type="text/javascript">
+function open_archive(url) {
+    window.location.href = '/archive/index.php?page_url=' + url;
+}
+</script>
 
+<?php end_page(); ?>
