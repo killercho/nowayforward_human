@@ -8,29 +8,29 @@ function on_post() {
 }
 
 class DownloadPage {
-    private $zip_location;
-    private $zip_name;
+    private $folder_location;
+    private $folder_name;
     private $page_url;
     private $page_contents;
 
-    function __construct($page_url, $zip_location) {
-        $this->zip_location = $zip_location;
+    function __construct($page_url, $folder_location) {
+        $this->folder_location = $folder_location;
         $this->page_url = $page_url;
         list($website_exists, $this->page_url) = $this->does_website_exist($this->page_url);
         if ($website_exists) {
-            $this->zip_name = Database\Webpage::create($zip_location, $page_url, 1) . '.zip';
+            $this->folder_name = Database\Webpage::create($folder_location, $page_url, 1);
             $this->page_contents = $this->download_file($this->page_url);
-            $zip = $this->create_zip_archive();
+            $this->create_archive();
         } else {
             echo "Website does not exist";
         }
     }
 
-    function set_zip_location($zip_location) {
-        $this->zip_location = $zip_location;
+    function set_folder_location($folder_location) {
+        $this->folder_location = $folder_location;
     }
-    function set_zip_name($zip_name) {
-        $this->zip_name = $zip_name;
+    function set_folder_name($folder_name) {
+        $this->folder_name = $folder_name;
     }
     function set_page_url($page_url) {
         $this->page_url = $page_url;
@@ -90,7 +90,7 @@ class DownloadPage {
         return rtrim($baseUrl, '/') . '/' . ltrim($relativeUrl, '/');
     }
 
-    function download_source(&$dom, &$zip, $tagName, $attribute) {
+    function download_source(&$dom, $folder_path, $tagName, $attribute) {
         $links = $dom->getElementsByTagName($tagName);
         foreach($links as $link) {
             $source = $link->getAttribute($attribute);
@@ -99,8 +99,12 @@ class DownloadPage {
                 if ($this->is_resource_accessible($sourceUrl)) {
                     $sourceContent = $this->download_file($sourceUrl);
                     if ($sourceContent) {
-                        $link->setAttribute($attribute, $sourceUrl);
-                        $zip->addFromString(basename($source), $sourceContent);
+                        $link->setAttribute($attribute, $folder_path . '/' . basename($source));
+                        // NOTE: This might need to be the basename instead of the sourceUrl
+                        $file = fopen($folder_path . '/' .  basename($source), "w");
+                        fwrite($file, $sourceContent);
+                        fclose($file);
+                        //$zip->addFromString(basename($source), $sourceContent);
                     }
                 }
             }
@@ -118,26 +122,24 @@ class DownloadPage {
         return ($code >= 200 && $code < 400);
     }
 
-    function create_zip_archive() {
-        // Creates and returns a zip object resulted from zipping the page that was downloaded
-        $zip = new ZipArchive();
-        if ($zip->open($this->zip_location . '/' . $this->zip_name, ZipArchive::CREATE) === TRUE) {
+    function create_archive() {
+        // Creates the folder with the correct resources and the main html page in a index.html tag
+        $dom = new DOMDocument();
+        @$dom->loadHTML($this->page_contents); // This suppresses warnings for invalid HTML
 
-            $dom = new DOMDocument();
-            @$dom->loadHTML($this->page_contents); // This suppresses warnings for invalid HTML
-
-            $this->download_source($dom, $zip, 'link', 'href');
-            $this->download_source($dom, $zip, 'script', 'src');
-            $this->download_source($dom, $zip, 'img', 'src');
-
-            $this->page_contents = $dom->saveHTML();
-            $zip->addFromString('index.html', $this->page_contents);
-            $zip->close();
-            echo "Archived {$this->page_url}";
-        } else {
-            echo "Zip archive could not be open";
+        $folder_path = $this->folder_location . '/' . $this->folder_name;
+        if (!file_exists($folder_path)) {
+            mkdir($folder_path, 0777, true);
         }
 
-        return $zip;
+        $this->download_source($dom, $folder_path, 'link', 'href');
+        $this->download_source($dom, $folder_path, 'script', 'src');
+        $this->download_source($dom, $folder_path, 'img', 'src');
+
+        $this->page_contents = $dom->saveHTML();
+        $indexFile = fopen($folder_path . '/index.html', "w");
+        fwrite($indexFile, $this->page_contents);
+        fclose($indexFile);
+        echo "Archived {$this->page_url}";
     }
 }
