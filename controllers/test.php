@@ -1,5 +1,5 @@
 <?php
 
 function on_post() {
-    Database\User::create($_POST["Username"], "", "User");
+    echo "Id: " . Database\User::create($_POST["Username"], "", "User");
 }

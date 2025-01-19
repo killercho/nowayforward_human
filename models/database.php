@@ -23,10 +23,14 @@ class User {
         return $query->fetch();
     }
 
-    static function create(string $Username, string $Password, string $Role) {
+    static function create(string $Username, string $Password, string $Role) : int {
         $conn = connect();
         $query = $conn->query("INSERT INTO Users (Username, Password, Role) VALUES (\"$Username\", \"$Password\", \"$Role\")");
+
+        // NOTE: If we ever insert more than one values, lastInsertId will returne the first id
+        $id = $conn->lastInsertId();
         $conn = null;
+        return $id;
     }
 
     static function get_all() : array {
