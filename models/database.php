@@ -38,7 +38,7 @@ class Webpage extends Table {
 
     static function create(string $Path, string $URL, int $RequesterUID) : int {
         return Table::_create(
-            'Webpage',
+            'Webpages',
             '(Path, URL, Date, Visits, RequesterUID)',
             "(\"$Path\", \"$URL\", NOW(), 0, \"$RequesterUID\")"
         );
@@ -46,7 +46,7 @@ class Webpage extends Table {
 
     static function fromDB(string $URL) : Webpage {
         return Table::_fromDB(
-            "SELECT * FROM Webpage WHERE URL = \"$URL\"",
+            "SELECT * FROM Webpages WHERE URL = \"$URL\"",
             "Database\Webpage"
         );
     }

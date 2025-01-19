@@ -17,9 +17,9 @@ CREATE TABLE IF NOT EXISTS Cookies (
     FOREIGN KEY (UID) REFERENCES Users(UID)
 );
 
-CREATE TABLE IF NOT EXISTS Webpage (
+CREATE TABLE IF NOT EXISTS Webpages (
     WID          INT          NOT NULL AUTO_INCREMENT,
-    Path         VARCHAR(512) NOT NULL UNIQUE,
+    Path         VARCHAR(512) NOT NULL,
     URL          VARCHAR(512) NOT NULL,
     Date         DATETIME     NOT NULL,
     Visits       INT          NOT NULL,
