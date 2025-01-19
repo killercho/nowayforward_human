@@ -6,7 +6,7 @@
     <h2>Explore the archives or add a new page</h2>
     <form action="/archive/index.php" method="GET" class="font-125 flex-row width-100 center-margin">
         <input type="text" name="page_url" placeholder="Enter a URL" class="flex-expand">
-        <input type="submit" name="archive_page_button" value="Search">
+        <input type="submit" value="Search">
     </form>
 </section>
 
