@@ -28,6 +28,30 @@ class User extends Table {
     }
 }
 
+class Webpage extends Table {
+    public $WID;
+    public $Path;
+    public $URL;
+    public $Date;
+    public $Visits;
+    public $RequesterUID;
+
+    static function create(string $Path, string $URL, int $RequesterUID) : int {
+        return Table::_create(
+            'Webpage',
+            '(Path, URL, Date, Visits, RequesterUID)',
+            "(\"$Path\", \"$URL\", NOW(), 0, \"$RequesterUID\")"
+        );
+    }
+
+    static function fromDB(string $URL) : Webpage {
+        return Table::_fromDB(
+            "SELECT * FROM Webpage WHERE URL = \"$URL\"",
+            "Database\Webpage"
+        );
+    }
+}
+
 abstract class Table {
     // Cannot be created, because FETCH_CLASS will assign to all attributes
     // and then call the constructor
