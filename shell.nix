@@ -36,9 +36,18 @@ let
       : ''${PHP_FPM_SOCKET:=$ROOT_DIR/php-fpm.sock}
       export SERVER_ROOT SERVER_PORT ROOT_DIR PHP_FPM_SOCKET
 
+      : ''${ARCHIVES_DIR:=$REPOSITORY/.archives}
+      export ARCHIVES_DIR
+
       #
       # Apache2
       #
+
+      if [ ! -d "$ARCHIVES_DIR" ]
+      then
+          echo 'Creating the archives directory...'
+          mkdir -p "$ARCHIVES_DIR"
+      fi
 
       if [ ! -d "$ROOT_DIR" ]
       then
