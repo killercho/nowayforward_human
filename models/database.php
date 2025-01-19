@@ -1,6 +1,7 @@
 <?php
 namespace Database;
 use PDO;
+use Exception;
 
 abstract class Table {
     // Cannot be created, because FETCH_CLASS will assign to all attributes
@@ -16,7 +17,7 @@ abstract class Table {
         if ($query->rowCount() == 0) {
             throw new Exception("Value for $class doesn't exist!");
         }
-        assert($query->rowCount() == 1, "Vaue for $class must be uniqely specified!");
+        assert($query->rowCount() == 1, "Value for $class must be uniqely specified!");
 
         $query->setFetchMode(PDO::FETCH_CLASS, $class);
         return $query->fetch();
@@ -30,6 +31,12 @@ abstract class Table {
         $id = $conn->lastInsertId();
         $conn = null;
         return $id;
+    }
+
+    static protected function _update(string $table, string $sets, string $identify) {
+        $conn = Table::connect();
+        $query = $conn->query("UPDATE $table SET $sets WHERE $identify");
+        $conn = null;
     }
 
     static protected function _get_all(string $table, string $class, string $additional = null) : array {
