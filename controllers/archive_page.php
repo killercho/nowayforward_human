@@ -99,8 +99,7 @@ class DownloadPage {
                 if ($this->is_resource_accessible($sourceUrl)) {
                     $sourceContent = $this->download_file($sourceUrl);
                     if ($sourceContent) {
-                        $link->setAttribute($attribute, $folder_path . '/' . basename($source));
-                        // NOTE: This might need to be the basename instead of the sourceUrl
+                        $link->setAttribute($attribute, './' . basename($source));
                         $file = fopen($folder_path . '/' .  basename($source), "w");
                         fwrite($file, $sourceContent);
                         fclose($file);
