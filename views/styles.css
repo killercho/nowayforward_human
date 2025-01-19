@@ -1,0 +1,138 @@
+:root {
+  --background-color: #2b2b2e;
+  --foreground-color: #edede7;
+
+  --highlight-border-color: #cecec9;
+  --orange: #cc7000;
+  --cherry: #703d46;
+}
+
+/* Global */
+* {
+  box-sizing: border-box;
+}
+body {
+  background: var(--background-color);
+  color: var(--foreground-color);
+
+  width: 100vw;
+  height: 100vh;
+
+  margin: 0;
+
+  font-family: sans-serif;
+  font-size: 18px;
+}
+
+a {
+  color: #add8e6;
+}
+
+strong {
+  color: #ff7233;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-align: center;
+}
+
+input {
+  color: inherit;
+  background-color: var(--cherry);
+
+  padding: 0.5em;
+
+  font-size: 0.95em;
+
+  border: none;
+  border-radius: 0.25em;
+}
+
+input[type=text]:focus {
+  outline: 2px solid var(--highlight-border-color);
+}
+
+input[type=submit]:hover {
+  cursor: pointer;
+}
+
+/* Main containers */
+header, article {
+  max-width: 60rem;
+
+  margin: 0 auto;
+  padding: 1em;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  gap: 0.2em;
+
+  font-size: 1.15em;
+  border-bottom: 3px solid var(--orange);
+}
+
+nav > * {
+  display: block;
+
+  width: fit-content;
+
+  color: color(--foreground-color);
+  background-color: var(--orange);
+  text-decoration: none;
+
+  border: 3px solid var(--orange);
+  border-bottom: none;
+  border-radius: 0.5em 0.5em 0 0;
+
+  padding: 0.5em;
+  padding-bottom: calc(0.6em - 3px);
+}
+
+nav > *:hover {
+  border: 3px solid var(--highlight-border-color);
+  border-bottom: none;
+}
+
+article > * {
+  width: 100%;
+}
+
+/* Page elements */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  /* color: #404040 */
+  background-image: url(/paper.jpg);
+  background-repeat: repeat;
+
+  height: 6.5em;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0) 0.5em,
+    rgba(0, 0, 0, 1) 2em
+  );
+
+  padding: 0.75em;
+  margin-top: 1em;
+
+  border-radius: 0.25em 0.25em 0;
+
+  transition-duration: 300ms;
+  transition-property: height;
+}
+
+.card:hover {
+  cursor: pointer;
+  height: 12.5em;
+}
+
+.card > .quickinfo {
+  font-size: 0.9em;
+  padding-bottom: 0.5em;
+  border-bottom: 3px dotted #909090;
+}
