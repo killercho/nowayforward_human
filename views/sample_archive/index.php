@@ -1,4 +1,5 @@
 <?php
+    $title = 'Archive a page';
     include '../meta.php';
     runController('archive_page');
 ?>

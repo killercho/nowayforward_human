@@ -1,4 +1,5 @@
 <?php
+    $title = 'Added user';
     include '../meta.php';
     runController('test');
 ?>

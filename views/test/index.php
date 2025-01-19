@@ -1,4 +1,5 @@
 <?php
+    $title = 'Test page';
     include '../meta.php';
 ?>
 
