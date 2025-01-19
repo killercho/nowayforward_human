@@ -14,7 +14,7 @@ class Webpage extends Table {
         return Table::_create(
             'Webpages',
             '(Path, URL, Date, Visits, RequesterUID)',
-            "(\"$Path\", \"$URL\", NOW(), 0, \"$RequesterUID\")"
+            "(\"$Path\", \"$URL\", (NOW() + INTERVAL 2 HOUR), 0, \"$RequesterUID\")"
         );
     }
 
