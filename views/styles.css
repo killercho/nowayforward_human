@@ -103,6 +103,12 @@ input[type=submit]:hover {
   flex: 1;
 }
 
+iframe {
+  border: 2px solid var(--foreground-color);
+  height: 20em;
+  pointer-events: none;
+}
+
 /* Main containers */
 header, article {
   max-width: 60rem;
@@ -202,4 +208,32 @@ hr.new-section {
 
 .card-blank-afterspace {
   height: var(--card-expand-with);
+}
+
+.item {
+  border: 2px solid teal;
+  display: flex;
+  flex-direction: row;
+  padding: 0.5em;
+  border-radius: 0.25em;
+  font-size: 1.08em;
+  margin-bottom: 1em;
+}
+
+.item > :first-child {
+  flex: 1;
+}
+
+.item img {
+  vertical-align: middle;
+}
+
+.item .favicon {
+  height: 2em;
+}
+
+.item .details {
+  font-size: 0.9em;
+  color: gray;
+  margin: 0.25em;
 }

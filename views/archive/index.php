@@ -5,10 +5,21 @@
 ?>
 
 <?php if ($page !== null): ?>
-    <iframe src="<?php echo "/archives/{$page->WID}" ?>"></iframe>
+    <iframe src="<?php echo "/archives/{$page->WID}" ?>" scrolling="no"></iframe>
+    <h2>Archives by date:</h2>
     <?php foreach (Database\Webpage::allArchives($page->URL) as $page): ?>
-        <section>
-            <?php echo $page->Date ?>
+        <section class="item">
+            <section>
+                <div>
+                    <img src="<?php echo "/archives/{$page->WID}/favicon.ico" ?>" class="favicon">
+                    <a href="<?php echo "/archives/{$page->WID}" ?>"><?php echo $page->URL ?></a>
+                    <span class="float-right"><?php echo $page->Date ?></span>
+                </div>
+                <div class="details">
+                    <span>Visits: <?php echo $page->Visits ?></span>
+                    <span class="float-right"><?php echo Database\User::fromDBuid($page->RequesterUID)->Username ?></span>
+                </div>
+            </section>
         </section>
     <?php endforeach; ?>
 
