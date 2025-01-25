@@ -12,6 +12,7 @@ class DownloadPage {
     private $folder_name;
     private $page_url;
     private $page_contents;
+    private $favicon_path;
 
     private function debugPrintToConsole($data) : void{
          $output = $data;
@@ -29,9 +30,10 @@ class DownloadPage {
         $page_url_pattern = $this->getCorrectLinkPattern($page_url);
         $simular_pages = Database\Webpage::getArchivePathsByPattern('%' . $page_url_pattern . '%');
         if ($website_exists) {
-            $this->folder_name = Database\Webpage::create($folder_location, $page_url, 1);
+            $this->folder_name = Database\Webpage::getPagesCount() + 1;
             $this->page_contents = $this->downloadFile($this->page_url);
             $this->createArchive($simular_pages);
+            Database\Webpage::create($folder_location, $page_url, 1, $this->favicon_path);
         } else {
             echo "Website does not exist";
         }
@@ -132,6 +134,9 @@ class DownloadPage {
                                     // change the link to point to the source of the previous archive instead of downloading a news source
                                     $link->setAttribute($attribute, "../" . $page->WID . "/" . $resourceName);
                                     $found_resource = true;
+                                    if (str_contains($resourceName, "favicon")) {
+                                        $this->favicon_path = $page->WID . "/" . $resourceName;
+                                    }
                                     break;
                                 }
                             }
@@ -139,11 +144,15 @@ class DownloadPage {
 
                         if (!$found_resource) {
                             // Page is unique so there will be no resource that can be cached
-                            $link->setAttribute($attribute, './' . basename($source));
-                            $file = fopen($folder_path . '/' .  basename($source), "w");
+                            $resourceName = basename($source);
+                            $link->setAttribute($attribute, './' . $resourceName);
+                            $file = fopen($folder_path . '/' .  $resourceName, "w");
                             if ($file){
                                 fwrite($file, $sourceContent);
                                 fclose($file);
+                            }
+                            if (str_contains($resourceName, "favicon")) {
+                                $this->favicon_path = $this->folder_name . "/" . $resourceName;
                             }
                         }
                     }
@@ -174,7 +183,6 @@ class DownloadPage {
                 // If there are no pages that are like that url point to the landing page of the site
                 // that says that this page was not yet archived
                 $tag->setAttribute($attribute, "../../archive/index.php?page_url=" . $this->baseToFullUrlForGet($this->page_url, $link));
-                $this->debugPrintToConsole($this->baseToFullUrlForGet($this->page_url, $link));
             }
         }
     }

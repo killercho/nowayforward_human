@@ -9,12 +9,13 @@ class Webpage extends Table {
     public $Date;
     public $Visits;
     public $RequesterUID;
+    public $FaviconPath;
 
-    static function create(string $Path, string $URL, int $RequesterUID) : int {
+    static function create(string $Path, string $URL, int $RequesterUID, string $FaviconPath) : int {
         return Table::_create(
             'Webpages',
-            '(Path, URL, Date, Visits, RequesterUID)',
-            "(\"$Path\", \"$URL\", (NOW() + INTERVAL 2 HOUR), 0, \"$RequesterUID\")"
+            '(Path, URL, Date, Visits, RequesterUID, FaviconPath)',
+            "(\"$Path\", \"$URL\", (NOW() + INTERVAL 2 HOUR), 0, \"$RequesterUID\", \"$FaviconPath\")"
         );
     }
 
@@ -23,6 +24,10 @@ class Webpage extends Table {
             "SELECT * FROM Webpages WHERE URL = \"$URL\" ORDER BY Date DESC LIMIT 1",
             "Database\Webpage"
         );
+    }
+
+    static function getPagesCount() : int {
+        return Table::_get_entries_count("Webpages");
     }
 
     static function mostVisited(int $count) : array {

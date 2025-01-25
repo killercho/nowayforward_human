@@ -33,6 +33,13 @@ abstract class Table {
         return $id;
     }
 
+    static protected function _get_entries_count(string $table) : int {
+        $conn = Table::connect();
+        $query = $conn->query("SELECT count(*) FROM $table");
+        $conn = null;
+        return $query->fetchColumn();
+    }
+
     static protected function _update(string $table, string $sets, string $identify) {
         $conn = Table::connect();
         $query = $conn->query("UPDATE $table SET $sets WHERE $identify");
