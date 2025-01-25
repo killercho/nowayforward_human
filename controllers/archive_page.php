@@ -13,6 +13,14 @@ class DownloadPage {
     private $page_url;
     private $page_contents;
 
+    private function debugPrintToConsole($data) : void{
+         $output = $data;
+         if (is_array($output))
+             $output = implode(',', $output);
+
+         echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+    }
+
     function __construct($page_url, $folder_location) {
         $this->folder_location = $folder_location;
         $this->page_url = $page_url;
@@ -30,7 +38,8 @@ class DownloadPage {
     }
 
     function getCorrectLinkPattern($page_url) : string {
-        $page_url = substr($page_url, strpos($page_url, "//"), strlen($page_url));
+        // NOTE: Offset by 2 because of the '//' of the protocol
+        $page_url = substr($page_url, strpos($page_url, "//") + 2, strlen($page_url));
         return $page_url;
     }
 
@@ -55,6 +64,7 @@ class DownloadPage {
         $curl_func = curl_init($url);
         curl_setopt($curl_func, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl_func, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl_func, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko; compatible; pageburst) Chrome/131.0.6778.204 Safari/537.36");
         $page_contents = curl_exec($curl_func);
         curl_close($curl_func);
         return $page_contents;
@@ -131,13 +141,49 @@ class DownloadPage {
                             // Page is unique so there will be no resource that can be cached
                             $link->setAttribute($attribute, './' . basename($source));
                             $file = fopen($folder_path . '/' .  basename($source), "w");
-                            fwrite($file, $sourceContent);
-                            fclose($file);
+                            if ($file){
+                                fwrite($file, $sourceContent);
+                                fclose($file);
+                            }
                         }
                     }
                 }
             }
         }
+    }
+
+    // Changes the hyperlinks in the site to ones that are local for the site
+    // or to the landing page when a page is not archived if the hyperlink of the
+    // other page is not archived
+    function changeHyperlinkToLocal(&$dom, $tagName, $attribute) : void {
+        $tags = $dom->getElementsByTagName($tagName);
+        foreach($tags as $tag) {
+            $link = $tag->getAttribute($attribute);
+            // Make a request to the db and check if any URLs like the 'link'
+            // exist in it and are presently donwloaded
+            //$link_url = $this->resolveUrl($link);
+            $page_url_pattern = $this->getCorrectLinkPattern($link);
+            // TODO: The link should depend on whether there is a domain in the front or not
+            $correct_results = Database\Webpage::getArchivePathsByPattern('%' . $page_url_pattern . '%');
+
+            if (count($correct_results) != 0) {
+                // If there are any links that are the same as the urls make the $dom attribute point
+                // to the latest version of that page
+                $tag->setAttribute($attribute, "../" . $correct_results[0]->WID . "/index.html");
+            } else {
+                // If there are no pages that are like that url point to the landing page of the site
+                // that says that this page was not yet archived
+                $tag->setAttribute($attribute, "../../archive/index.php?page_url=" . $this->baseToFullUrlForGet($this->page_url, $link));
+                $this->debugPrintToConsole($this->baseToFullUrlForGet($this->page_url, $link));
+            }
+        }
+    }
+
+    function baseToFullUrlForGet($url, $base) : string {
+        $replaced = rtrim($url, '/') . '/' . ltrim($base, '/');
+        $replaced = str_replace('/', '%2F', $replaced);
+        $replaced = str_replace(':', '%3A', $replaced);
+        return $replaced;
     }
 
     function isResourceAccessible($url) : bool {
@@ -164,6 +210,8 @@ class DownloadPage {
         $this->downloadSource($dom, $folder_path, 'link', 'href', $simular_pages);
         $this->downloadSource($dom, $folder_path, 'script', 'src', $simular_pages);
         $this->downloadSource($dom, $folder_path, 'img', 'src', $simular_pages);
+
+        $this->changeHyperlinkToLocal($dom, 'a', 'href');
 
         $this->page_contents = $dom->saveHTML();
         $indexFile = fopen($folder_path . '/index.html', "w");
