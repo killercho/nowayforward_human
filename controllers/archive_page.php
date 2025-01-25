@@ -147,6 +147,42 @@ class DownloadPage {
         return rtrim($baseUrl, '/') . '/' . ltrim($relativeUrl, '/');
     }
 
+    function handleCssUrls(&$content) : void {
+        if (preg_match_all('/url\((.*)\)/', $content, $matches, PREG_PATTERN_ORDER) > 0) {
+            $urls = $matches[1];
+
+            foreach ($urls as $url) {
+                $original_url = $url;
+                $url = ltrim($url, "'()");
+                $url = rtrim($url, "'()");
+                $url = substr($url, 0, strpos($url, "'"));
+
+                // Handle relative URLs
+                if (parse_url($url, PHP_URL_SCHEME) === null) {
+                    $url = $this->page_url . $url;
+                }
+
+                if ($this->isResourceAccessible($url)) {
+                    // Get the file name and local path
+                    $file_name = basename($url);
+                    $file_path = './' . $file_name;
+                    $folder_path = $this->folder_location . '/' . $this->folder_name;
+                    $urlContents = $this->downloadFile($url);
+                    if ($urlContents) {
+                        // Save the resource locally
+                        $file = fopen($folder_path . '/' .  $file_name, "w");
+                        if ($file){
+                            fwrite($file, $urlContents);
+                            fclose($file);
+                        }
+                        // Replace the URL in the CSS content
+                        $content = str_replace($original_url, "'" . $file_path . "'", $content);
+                    }
+                }
+            }
+        }
+    }
+
     function downloadSource(&$dom, $folder_path, $tagName, $attribute, $simular_pages) : void {
         $links = $dom->getElementsByTagName($tagName);
         foreach($links as $link) {
@@ -157,6 +193,11 @@ class DownloadPage {
                     $sourceContent = $this->downloadFile($sourceUrl);
                     if ($sourceContent) {
                         $found_resource = false;
+                        if ($tagName == "link") {
+                            // The resource is a css resource most likely
+                            // Go trough the resource, download the urls and replace them with their local path
+                            $this->handleCssUrls($sourceContent);
+                        }
                         if (count($simular_pages) != 0) {
                             // Page is not unique so check if any other already downloaded resource is
                             // the same as the resource that is needed thus not actually needing to download it
