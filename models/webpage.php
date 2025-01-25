@@ -42,6 +42,15 @@ class Webpage extends Table {
         );
     }
 
+    static function getArchivePathsByPattern(string $URLPattern) : array {
+        return Table::_get_all(
+            'Webpages',
+            'Database\Webpage',
+            "WHERE URL LIKE \"$URLPattern\" ORDER BY Date DESC",
+            "Path, WID"
+        );
+    }
+
     function incrementVisits() {
         Table::_update(
             'Webpages',

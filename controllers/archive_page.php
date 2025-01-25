@@ -17,18 +17,21 @@ class DownloadPage {
         $this->folder_location = $folder_location;
         $this->page_url = $page_url;
         list($website_exists, $this->page_url) = $this->doesWebsiteExist($this->page_url);
-        // TODO: Make a clause for whether the same site was already archived at least once
-        // This should happen with a request to the database
-        // If such site exists then when downloading the resources check whether some of the resources already exist in the
-        // old archive
-        // If they do dont download them (or rather delete and make the pointers point to the correct archive folder
+        // Search for all the regexes that fit the *url* pattern where the pattern is the requested url but without the protocol
+        $page_url_pattern = $this->getCorrectLinkPattern($page_url);
+        $simular_pages = Database\Webpage::getArchivePathsByPattern('%' . $page_url_pattern . '%');
         if ($website_exists) {
             $this->folder_name = Database\Webpage::create($folder_location, $page_url, 1);
             $this->page_contents = $this->downloadFile($this->page_url);
-            $this->createArchive();
+            $this->createArchive($simular_pages);
         } else {
             echo "Website does not exist";
         }
+    }
+
+    function getCorrectLinkPattern($page_url) : string {
+        $page_url = substr($page_url, strpos($page_url, "//"), strlen($page_url));
+        return $page_url;
     }
 
     function setFolderLocation($folder_location) : void {
@@ -40,7 +43,7 @@ class DownloadPage {
     function setPageUrl($page_url) : void {
         $this->page_url = $page_url;
     }
-    function applyCorrectProtocol($url, $protocol) : void {
+    function applyCorrectProtocol($url, $protocol) : string {
         if (str_contains($url, $protocol)) {
             return $url;
         }
@@ -57,7 +60,7 @@ class DownloadPage {
         return $page_contents;
     }
 
-    function doesWebsiteExist($url) : array(bool, string) {
+    function doesWebsiteExist($url) : array {
         // Check if the site exists with https
         $https_url = $this->applyCorrectProtocol($url, "https://");
         if ($https_url != $url) {
@@ -95,7 +98,7 @@ class DownloadPage {
         return rtrim($baseUrl, '/') . '/' . ltrim($relativeUrl, '/');
     }
 
-    function downloadSource(&$dom, $folder_path, $tagName, $attribute) : void {
+    function downloadSource(&$dom, $folder_path, $tagName, $attribute, $simular_pages) : void {
         $links = $dom->getElementsByTagName($tagName);
         foreach($links as $link) {
             $source = $link->getAttribute($attribute);
@@ -104,10 +107,33 @@ class DownloadPage {
                 if ($this->isResourceAccessible($sourceUrl)) {
                     $sourceContent = $this->downloadFile($sourceUrl);
                     if ($sourceContent) {
-                        $link->setAttribute($attribute, './' . basename($source));
-                        $file = fopen($folder_path . '/' .  basename($source), "w");
-                        fwrite($file, $sourceContent);
-                        fclose($file);
+                        $found_resource = false;
+                        if (count($simular_pages) != 0) {
+                            // Page is not unique so check if any other already downloaded resource is
+                            // the same as the resource that is needed thus not actually needing to download it
+                            foreach($simular_pages as $page) {
+                                $resourceName = basename($source);
+                                if (!file_exists($this->folder_location . "/" . $page->WID . "/" . $resourceName)) {
+                                    continue;
+                                }
+                                $resourceContents = file_get_contents($this->folder_location . "/" . $page->WID . "/" . $resourceName);
+                                if (strlen($resourceContents) == strlen($sourceContent) && md5($resourceContents) == md5($sourceContent)) {
+                                    // They are the same resource
+                                    // change the link to point to the source of the previous archive instead of downloading a news source
+                                    $link->setAttribute($attribute, "../" . $page->WID . "/" . $resourceName);
+                                    $found_resource = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!$found_resource) {
+                            // Page is unique so there will be no resource that can be cached
+                            $link->setAttribute($attribute, './' . basename($source));
+                            $file = fopen($folder_path . '/' .  basename($source), "w");
+                            fwrite($file, $sourceContent);
+                            fclose($file);
+                        }
                     }
                 }
             }
@@ -125,7 +151,7 @@ class DownloadPage {
         return ($code >= 200 && $code < 400);
     }
 
-    function createArchive() : void {
+    function createArchive($simular_pages) : void {
         // Creates the folder with the correct resources and the main html page in a index.html tag
         $dom = new DOMDocument();
         @$dom->loadHTML($this->page_contents); // This suppresses warnings for invalid HTML
@@ -135,9 +161,9 @@ class DownloadPage {
             mkdir($folder_path, 0777, true);
         }
 
-        $this->downloadSource($dom, $folder_path, 'link', 'href');
-        $this->downloadSource($dom, $folder_path, 'script', 'src');
-        $this->downloadSource($dom, $folder_path, 'img', 'src');
+        $this->downloadSource($dom, $folder_path, 'link', 'href', $simular_pages);
+        $this->downloadSource($dom, $folder_path, 'script', 'src', $simular_pages);
+        $this->downloadSource($dom, $folder_path, 'img', 'src', $simular_pages);
 
         $this->page_contents = $dom->saveHTML();
         $indexFile = fopen($folder_path . '/index.html', "w");
