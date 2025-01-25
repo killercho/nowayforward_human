@@ -20,8 +20,8 @@
             <a href="<?php echo $page->URL ?>"><?php echo $page->URL ?></a>
             <span class="float-right"><?php echo $page->Date ?></span>
         </section>
-        <section>
-            <span><!-- Favicon --></span>
+        <section class="title">
+            <img src="<?php echo '/archives/' . $page->FaviconPath ?>"></span>
             <span><!-- Title --></span>
         </section>
         <section>
