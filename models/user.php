@@ -9,6 +9,7 @@ class User extends Table {
     public $Role;
 
     static function create(string $Username, string $Password, string $Role) : int {
+        $Password = password_hash($Password, PASSWORD_BCRYPT);
         return Table::_create(
             "Users",
             "(Username, Password, Role)",

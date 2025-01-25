@@ -1,10 +1,11 @@
 CREATE DATABASE IF NOT EXISTS nwfh;
 USE nwfh;
 
+-- Password is BCRYPT encrypted, and is maximum 72 characters
 CREATE TABLE IF NOT EXISTS Users (
     UID      INT                   NOT NULL AUTO_INCREMENT,
     Username VARCHAR(50)           NOT NULL UNIQUE,
-    Password VARCHAR(50)           NOT NULL,
+    Password VARCHAR(72)           NOT NULL,
     Role     ENUM('User', 'Admin') NOT NULL,
     PRIMARY KEY (UID)
 );
