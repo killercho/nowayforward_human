@@ -11,9 +11,12 @@
 <body>
     <header>
         <nav>
+            <div class="fadeout-left"></div>
             <a href="/home/index.php">Home</a>
             <a href="/test/index.php">Test</a>
             <a href="/sample_archive/index.php">Sample Archive</a>
+            <div class="flex-expand"></div>
+            <div class="fadeout-right"></div>
         </nav>
     </header>
     <article>
