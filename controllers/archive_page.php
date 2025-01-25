@@ -13,6 +13,7 @@ class DownloadPage {
     private $page_url;
     private $page_contents;
     private $favicon_path;
+    private $page_title;
 
     private function debugPrintToConsole($data) : void{
          $output = $data;
@@ -38,7 +39,7 @@ class DownloadPage {
                 // Fallback and try to download them from the server directly
                 $this->tryDownloadFavicon();
             }
-            Database\Webpage::create($folder_location, $page_url, 1, $this->favicon_path);
+            Database\Webpage::create($folder_location, $page_url, 1, $this->favicon_path, $this->page_title);
         } else {
             echo "Website does not exist";
         }
@@ -247,6 +248,14 @@ class DownloadPage {
         return ($code >= 200 && $code < 400);
     }
 
+    function updatePageTitle(&$dom) {
+        $titles = $dom->getElementsByTagName("title");
+        if ($titles->length > 0) {
+            $this->page_title = $titles->item(0)->textContent;
+        }
+    }
+
+
     function createArchive($simular_pages) : void {
         // Creates the folder with the correct resources and the main html page in a index.html tag
         $dom = new DOMDocument();
@@ -261,6 +270,8 @@ class DownloadPage {
         $this->downloadSource($dom, $folder_path, 'link', 'href', $simular_pages);
         $this->downloadSource($dom, $folder_path, 'script', 'src', $simular_pages);
         $this->downloadSource($dom, $folder_path, 'img', 'src', $simular_pages);
+
+        $this->updatePageTitle($dom);
 
         $this->changeHyperlinkToLocal($dom, 'a', 'href');
 
