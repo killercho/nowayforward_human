@@ -23,6 +23,12 @@
         </section>
     <?php endforeach; ?>
 
+<?php elseif(!doesWebsiteExist($_GET["page_url"])): ?>
+    <h2>"<?php echo $_GET["page_url"] ?>" Does not exist!</h2>
+    <p>Submit another request or check the spelling of the site and try again</p>
+    <a href="/home/index.php">Go back!</a>
+
+
 <?php else: ?>
     <h2>"<?php echo $_GET["page_url"] ?>" hasn't been archived yet!</h2>
     <form action="/sample_archive/index.php" method="POST">
