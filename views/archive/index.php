@@ -6,6 +6,14 @@
 
 <?php if ($page !== null): ?>
     <iframe src="<?php echo "/archives/{$page->WID}" ?>" scrolling="no"></iframe>
+
+    <form action="/sample_archive/index.php" method="POST">
+        <input type="hidden" name="page_url" value="<?php echo $_GET["page_url"] ?>">
+        <input type="submit" value="Archive Now!">
+    </form>
+    <!-- Button to add to list -->
+    <!-- Button to delete -->
+
     <h2>Archives by date:</h2>
     <?php foreach (Database\Webpage::allArchives($page->URL) as $page): ?>
         <section class="item">
@@ -20,6 +28,12 @@
                     <span class="float-right"><?php echo Database\User::fromDBuid($page->RequesterUID)->Username ?></span>
                 </div>
             </section>
+            <?php if (false): # If user logged-in ?>
+                <section>
+                    <span><!-- Add to list button --></span>
+                    <span><!-- Delete (when admin) button --></span>
+                <section>
+            <?php endif; ?>
         </section>
     <?php endforeach; ?>
 
