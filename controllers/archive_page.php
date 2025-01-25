@@ -33,10 +33,46 @@ class DownloadPage {
             $this->folder_name = Database\Webpage::getPagesCount() + 1;
             $this->page_contents = $this->downloadFile($this->page_url);
             $this->createArchive($simular_pages);
+            if (!$this->favicon_path) {
+                // No favicons were found in the normal links
+                // Fallback and try to download them from the server directly
+                $this->tryDownloadFavicon();
+            }
             Database\Webpage::create($folder_location, $page_url, 1, $this->favicon_path);
         } else {
             echo "Website does not exist";
         }
+    }
+
+    function tryDownloadFavicon() : void {
+        // Tries to download an icon from the server directly
+        // The tried names are favicon.png/ico/jpeg/jpg/svg
+
+        foreach(["png", "ico", "jpeg", "jpg", "svg"] as $ending) {
+            $currentName = "/favicon." . $ending;
+            $currentLink = $this->page_url . $currentName;
+            if ($this->downloadFavicon($currentLink, $currentName)) {
+                break;
+            }
+        }
+    }
+
+    function downloadFavicon(string $currentLink, string $currentName) : bool {
+        if ($this->isResourceAccessible($currentLink)) {
+            $sourceContent = $this->downloadFile($currentLink);
+            if ($sourceContent) {
+                $resourceName = basename($currentName);
+                $folder_path = $this->folder_location . '/' . $this->folder_name;
+                $file = fopen($folder_path . '/' .  $resourceName, "w");
+                if ($file){
+                    fwrite($file, $sourceContent);
+                    fclose($file);
+                    $this->favicon_path = $this->folder_name . $currentName;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     function getCorrectLinkPattern($page_url) : string {
@@ -134,8 +170,11 @@ class DownloadPage {
                                     // change the link to point to the source of the previous archive instead of downloading a news source
                                     $link->setAttribute($attribute, "../" . $page->WID . "/" . $resourceName);
                                     $found_resource = true;
-                                    if (str_contains($resourceName, "favicon")) {
-                                        $this->favicon_path = $page->WID . "/" . $resourceName;
+                                    if ($tagName == "link") {
+                                        $faviconTry = $link->getAttribute("rel");
+                                        if ($faviconTry && ($faviconTry == "icon" || $faviconTry == "icon shortcut")) {
+                                            $this->favicon_path = $page->WID . "/" . $resourceName;
+                                        }
                                     }
                                     break;
                                 }
@@ -151,8 +190,11 @@ class DownloadPage {
                                 fwrite($file, $sourceContent);
                                 fclose($file);
                             }
-                            if (str_contains($resourceName, "favicon")) {
-                                $this->favicon_path = $this->folder_name . "/" . $resourceName;
+                            if ($tagName == "link") {
+                                $faviconTry = $link->getAttribute("rel");
+                                if ($faviconTry && ($faviconTry == "icon" || $faviconTry == "icon shortcut")) {
+                                    $this->favicon_path = $this->folder_name . "/" . $resourceName;
+                                }
                             }
                         }
                     }
