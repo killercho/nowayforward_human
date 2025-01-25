@@ -16,6 +16,7 @@
             <a href="/test/index.php">Test</a>
             <a href="/sample_archive/index.php">Sample Archive</a>
             <div class="flex-expand"></div>
+            <a href="/login/index.php">Login</a>
             <a href="/register/index.php">Register</a>
             <div class="fadeout-right"></div>
         </nav>
