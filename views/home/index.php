@@ -22,7 +22,7 @@
         </section>
         <section class="title">
             <img src="<?php echo '/archives/' . $page->FaviconPath ?>"></span>
-            <span><!-- Title --></span>
+            <span><?php echo $page->Title ?></span>
         </section>
         <section>
             <strong>Visits: <?php echo $page->Visits ?></strong>
