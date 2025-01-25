@@ -16,26 +16,31 @@ class DownloadPage {
     function __construct($page_url, $folder_location) {
         $this->folder_location = $folder_location;
         $this->page_url = $page_url;
-        list($website_exists, $this->page_url) = $this->does_website_exist($this->page_url);
+        list($website_exists, $this->page_url) = $this->doesWebsiteExist($this->page_url);
+        // TODO: Make a clause for whether the same site was already archived at least once
+        // This should happen with a request to the database
+        // If such site exists then when downloading the resources check whether some of the resources already exist in the
+        // old archive
+        // If they do dont download them (or rather delete and make the pointers point to the correct archive folder
         if ($website_exists) {
             $this->folder_name = Database\Webpage::create($folder_location, $page_url, 1);
-            $this->page_contents = $this->download_file($this->page_url);
-            $this->create_archive();
+            $this->page_contents = $this->downloadFile($this->page_url);
+            $this->createArchive();
         } else {
             echo "Website does not exist";
         }
     }
 
-    function set_folder_location($folder_location) {
+    function setFolderLocation($folder_location) : void {
         $this->folder_location = $folder_location;
     }
-    function set_folder_name($folder_name) {
+    function setFolderName($folder_name) : void {
         $this->folder_name = $folder_name;
     }
-    function set_page_url($page_url) {
+    function setPageUrl($page_url) : void {
         $this->page_url = $page_url;
     }
-    function apply_correct_protocol($url, $protocol) {
+    function applyCorrectProtocol($url, $protocol) : void {
         if (str_contains($url, $protocol)) {
             return $url;
         }
@@ -43,7 +48,7 @@ class DownloadPage {
         return $protocol . $url;
     }
 
-    function download_file($url) {
+    function downloadFile($url) : string {
         $curl_func = curl_init($url);
         curl_setopt($curl_func, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl_func, CURLOPT_FOLLOWLOCATION, true);
@@ -52,9 +57,9 @@ class DownloadPage {
         return $page_contents;
     }
 
-    function does_website_exist($url) {
+    function doesWebsiteExist($url) : array(bool, string) {
         // Check if the site exists with https
-        $https_url = $this->apply_correct_protocol($url, "https://");
+        $https_url = $this->applyCorrectProtocol($url, "https://");
         if ($https_url != $url) {
             $url_headers = @get_headers($https_url);
             if ($url_headers && $url_headers[0] != 'HTTP/1.1 404 Not Found') {
@@ -63,7 +68,7 @@ class DownloadPage {
         }
 
         // Check if the site exists with http
-        $http_url = $this->apply_correct_protocol($url, "http://");
+        $http_url = $this->applyCorrectProtocol($url, "http://");
         if ($http_url != $url) {
             $url_headers = @get_headers($http_url);
             if ($url_headers && $url_headers[0] != 'HTTP/1.1 404 Not Found') {
@@ -81,7 +86,7 @@ class DownloadPage {
         return array(false, $url);
     }
 
-    function resolveUrl($relativeUrl, $baseUrl) {
+    function resolveUrl($relativeUrl, $baseUrl) : string {
         // If the url is already absolute return it
         if (parse_url($relativeUrl, PHP_URL_SCHEME)) {
             return $relativeUrl;
@@ -90,27 +95,26 @@ class DownloadPage {
         return rtrim($baseUrl, '/') . '/' . ltrim($relativeUrl, '/');
     }
 
-    function download_source(&$dom, $folder_path, $tagName, $attribute) {
+    function downloadSource(&$dom, $folder_path, $tagName, $attribute) : void {
         $links = $dom->getElementsByTagName($tagName);
         foreach($links as $link) {
             $source = $link->getAttribute($attribute);
             if ($source) {
                 $sourceUrl = $this->resolveUrl($source, $this->page_url);
-                if ($this->is_resource_accessible($sourceUrl)) {
-                    $sourceContent = $this->download_file($sourceUrl);
+                if ($this->isResourceAccessible($sourceUrl)) {
+                    $sourceContent = $this->downloadFile($sourceUrl);
                     if ($sourceContent) {
                         $link->setAttribute($attribute, './' . basename($source));
                         $file = fopen($folder_path . '/' .  basename($source), "w");
                         fwrite($file, $sourceContent);
                         fclose($file);
-                        //$zip->addFromString(basename($source), $sourceContent);
                     }
                 }
             }
         }
     }
 
-    function is_resource_accessible($url) {
+    function isResourceAccessible($url) : bool {
         $curl_func = curl_init($url);
         curl_setopt($curl_func, CURLOPT_NOBODY, true); // Gives only the headers
         curl_setopt($curl_func, CURLOPT_RETURNTRANSFER, true);
@@ -121,7 +125,7 @@ class DownloadPage {
         return ($code >= 200 && $code < 400);
     }
 
-    function create_archive() {
+    function createArchive() : void {
         // Creates the folder with the correct resources and the main html page in a index.html tag
         $dom = new DOMDocument();
         @$dom->loadHTML($this->page_contents); // This suppresses warnings for invalid HTML
@@ -131,9 +135,9 @@ class DownloadPage {
             mkdir($folder_path, 0777, true);
         }
 
-        $this->download_source($dom, $folder_path, 'link', 'href');
-        $this->download_source($dom, $folder_path, 'script', 'src');
-        $this->download_source($dom, $folder_path, 'img', 'src');
+        $this->downloadSource($dom, $folder_path, 'link', 'href');
+        $this->downloadSource($dom, $folder_path, 'script', 'src');
+        $this->downloadSource($dom, $folder_path, 'img', 'src');
 
         $this->page_contents = $dom->saveHTML();
         $indexFile = fopen($folder_path . '/index.html', "w");
