@@ -208,7 +208,8 @@ class DownloadPage {
     function createArchive($simular_pages) : void {
         // Creates the folder with the correct resources and the main html page in a index.html tag
         $dom = new DOMDocument();
-        @$dom->loadHTML($this->page_contents); // This suppresses warnings for invalid HTML
+        $contentType = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'; // Ensures the encoding is UTF-8
+        @$dom->loadHTML($contentType . $this->page_contents); // This suppresses warnings for invalid HTML
 
         $folder_path = $this->folder_location . '/' . $this->folder_name;
         if (!file_exists($folder_path)) {
