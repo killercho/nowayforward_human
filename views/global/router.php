@@ -18,6 +18,7 @@ function route_view() {
         case '/login': return '/login';
         case '/logout': return '/logout';
         case '/newlist': return '/newlist';
+        case '/list': return '/list';
     }
 
     switch ($uri) {

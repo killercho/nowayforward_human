@@ -19,7 +19,7 @@ class ArchiveList extends Table {
     static function fromDB(int $LID) : ArchiveList {
         return Table::_fromDB(
             "SELECT * FROM ArchiveLists WHERE LID = \"$LID\"",
-            'Database\ArchiveLists'
+            'Database\ArchiveList'
         );
     }
 
