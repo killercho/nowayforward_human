@@ -48,6 +48,14 @@ class Webpage extends Table {
         );
     }
 
+    static function allArchivesByUser(int $UID) : array {
+        return Table::_get_all(
+            'Webpages',
+            'Database\Webpage',
+            "WHERE RequesterUID = \"$UID\" ORDER BY Date DESC"
+        );
+    }
+
     static function getArchivePathsByPattern(string $URLPattern) : array {
         return Table::_get_all(
             'Webpages',
