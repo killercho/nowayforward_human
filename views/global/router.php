@@ -5,11 +5,22 @@ $CONTROLLERS_DIR = __DIR__ . '/../../controllers';
 $MODELS_DIR = __DIR__ . '/../../models';
 
 $uri = rtrim($_SERVER['REQUEST_URI'], '/');
-$root = '/' . @explode('/', $uri, 3)[1];
+$exploded = @explode('/', $uri, 4);
+$root = '/' . @$exploded[1];
+$subroot = '/' . @$exploded[2];
 
 function route_view() {
     global $root;
+    global $subroot;
     global $uri;
+
+    switch ($uri) {
+        case '': case '/': case '/home':
+            return '/home';
+    }
+
+    switch ($root . $subroot) {
+    }
 
     switch ($root) {
         case '/archive': return '/archive';
@@ -19,19 +30,13 @@ function route_view() {
         case '/logout': return '/logout';
         case '/newlist': return '/newlist';
         case '/list': return '/list';
-    }
-
-    switch ($uri) {
-        case '': case '/': case '/home':
-            return '/home';
 
         case '/authenticate':
             return '/profile/authenticate.php';
-
-        default:
-            http_response_code(404);
-            return '/404';
     }
+
+    http_response_code(404);
+    return '/404';
 }
 $view = $VIEWS_DIR . route_view();
 
