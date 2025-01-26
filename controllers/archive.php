@@ -297,9 +297,8 @@ class DownloadPage {
             $link = $tag->getAttribute($attribute);
             // Make a request to the db and check if any URLs like the 'link'
             // exist in it and are presently donwloaded
-            //$link_url = $this->resolveUrl($link);
+            $link = $this->resolveUrl($link, $this->page_url);
             $page_url_pattern = $this->getCorrectLinkPattern($link);
-            // TODO: The link should depend on whether there is a domain in the front or not
             $correct_results = Database\Webpage::getArchivePathsByPattern('%' . $page_url_pattern . '%');
 
             if (count($correct_results) != 0) {
@@ -309,16 +308,9 @@ class DownloadPage {
             } else {
                 // If there are no pages that are like that url point to the landing page of the site
                 // that says that this page was not yet archived
-                $tag->setAttribute($attribute, "/archive/?url=" . $this->baseToFullUrlForGet($this->page_url, $link));
+                $tag->setAttribute($attribute, "/archive/?url=" . $link);
             }
         }
-    }
-
-    function baseToFullUrlForGet($url, $base) : string {
-        $replaced = rtrim($url, '/') . '/' . ltrim($base, '/');
-        $replaced = str_replace('/', '%2F', $replaced);
-        $replaced = str_replace(':', '%3A', $replaced);
-        return $replaced;
     }
 
     function isResourceAccessible($url) : bool {
