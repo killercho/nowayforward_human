@@ -1,5 +1,7 @@
 <?php
+    $title = $_GET["page_url"] . ' archive';
     include '../meta.php';
+
     $page = null;
     runController('archive');
 ?>

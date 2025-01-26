@@ -1,4 +1,5 @@
 <?php
+    $title = 'Home';
     include '../meta.php';
 ?>
 

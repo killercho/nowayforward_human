@@ -1,6 +1,8 @@
 <?php
 
-include_once "../header.php";
+if (isset($title)) {
+    include_once "../header.php";
+}
 
 function end_page() {
     include_once "../footer.php";
