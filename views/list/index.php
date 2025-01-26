@@ -3,7 +3,7 @@
     $author = null;
 
     try {
-        $list = Database\ArchiveList::fromDB($lid);
+        $list = Database\ArchiveList::fromDB($lid ?? -1);
         $author = Database\User::fromDBuid($list->AuthorUID);
     }
     catch(Exception $e) {}
