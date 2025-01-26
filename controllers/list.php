@@ -16,3 +16,32 @@ function on_post() {
         $list_status = $e;
     }
 }
+
+function on_patch() {
+    global $TOKEN;
+    global $METHOD;
+
+    try {
+        $user = Database\Cookie::fromDB($TOKEN);
+    }
+    catch(Exception $e) {
+        return;
+    }
+
+    $list = null;
+    try {
+        $list = Database\ArchiveList::fromDB($METHOD['lid']);
+    }
+    catch(Exception $e) {
+        return;
+    }
+
+    switch ($METHOD['type']) {
+        case 'add': $list->addItem($METHOD['wid']); break;
+
+        default: throw new Exception('Unknown type ' . $METHOD['type']);
+    }
+
+    header('Location: /list/' . $list->LID);
+    exit();
+}

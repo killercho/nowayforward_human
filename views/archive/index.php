@@ -37,14 +37,23 @@
                     <span class="float-right"><?= Database\User::fromDBuid($page->RequesterUID)->Username ?></span>
                 </div>
             </section>
-            <?php if (false): # If user logged-in ?>
-                <section>
-                    <span><!-- Add to list button --></span>
-                    <span><!-- Delete (when admin) button --></span>
-                <section>
-            <?php endif; ?>
+            <section name="itemButton" hidden>
+                <form action="/list/update" method="GET">
+                    <input type="hidden" name="wid" value="<?= $page->WID ?>">
+                    <input type="submit" value="+">
+                </form>
+                <span><!-- Delete (when admin) button --></span>
+            </section>
         </section>
     <?php endforeach; ?>
+    <script type="text/javascript">
+        function showButtons() {
+            for (buttonset of document.getElementsByName('itemButton')) {
+                buttonset.hidden = false;
+            }
+        }
+        authenticated(showButtons);
+    </script>
 
 <?php elseif(!$exists): ?>
     <h2>"<?= $url ?>" Does not exist!</h2>

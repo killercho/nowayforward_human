@@ -20,6 +20,7 @@ function route_view() {
     }
 
     switch ($root . $subroot) {
+        case '/list/update': return '/list/update';
     }
 
     switch ($root) {
