@@ -27,9 +27,9 @@ class Webpage extends Table {
         );
     }
 
-    static function getPageById(int $id) : Webpage {
+    static function fromDBwid(int $WID) : Webpage {
         return Table::_fromDB(
-            "SELECT * FROM Webpages WHERE WID = \"$id\"",
+            "SELECT * FROM Webpages WHERE WID = \"$WID\"",
             "Database\Webpage"
         );
     }

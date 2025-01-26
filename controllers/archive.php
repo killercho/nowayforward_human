@@ -370,7 +370,7 @@ class DownloadPage {
             debugPrintToConsole("This is necessary for some reason, without it the content is not actually shown!");
 
             $currentPageId = basename(__DIR__);
-            $currentPage = Database\Webpage::getPageById($currentPageId);
+            $currentPage = Database\Webpage::fromDBwid($currentPageId);
             $requesterUsername = Database\User::fromDBuid($currentPage->RequesterUID);
 
             $previousPageId = Database\Webpage::getPreviousPageId($currentPage->URL, $currentPage->Date);
