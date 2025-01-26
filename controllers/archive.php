@@ -2,12 +2,20 @@
 namespace Controller;
 use Database;
 use DOMDocument;
+use Exception;
 
 function on_post() {
     $WEBSITE_CATEGORY = 'page_url';
     $DOWNLOADS_FOLDER = getenv('ARCHIVES_DIR');
     $website_url = $_POST[$WEBSITE_CATEGORY];
-    $currentPage = new DownloadPage($website_url, $DOWNLOADS_FOLDER);
+    $uid = 1;
+    if (array_key_exists('token', $_POST) && strlen($_POST['token']) === 36) {
+        try {
+            $uid = Database\Cookie::fromDB($_POST['token'])->UID;
+        }
+        catch (Exception $e) {}
+    }
+    $currentPage = new DownloadPage($website_url, $DOWNLOADS_FOLDER, $uid);
 }
 
 class DownloadPage {
@@ -18,7 +26,7 @@ class DownloadPage {
     private $favicon_path;
     private $page_title;
 
-    function __construct($page_url, $folder_location) {
+    function __construct($page_url, $folder_location, $requester_uid) {
         $this->folder_location = $folder_location;
         $this->page_url = $page_url;
         list($website_exists, $this->page_url) = $this->doesWebsiteExist($this->page_url);
@@ -34,7 +42,7 @@ class DownloadPage {
                 // Fallback and try to download them from the server directly
                 $this->tryDownloadFavicon();
             }
-            Database\Webpage::create($folder_location, $page_url, 1, $this->favicon_path, $this->page_title);
+            Database\Webpage::create($folder_location, $page_url, $requester_uid, $this->favicon_path, $this->page_title);
         } else {
             echo "Website does not exist";
         }
