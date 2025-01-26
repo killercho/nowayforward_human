@@ -354,6 +354,7 @@ class DownloadPage {
         $this->downloadSource($dom, $folder_path, 'link', 'href', $simular_pages);
         $this->downloadSource($dom, $folder_path, 'script', 'src', $simular_pages);
         $this->downloadSource($dom, $folder_path, 'img', 'src', $simular_pages);
+        $this->downloadSource($dom, $folder_path, 'frame', 'src', $simular_pages);
 
         $this->updatePageTitle($dom);
 
