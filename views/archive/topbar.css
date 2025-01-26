@@ -1,0 +1,44 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar-info {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.navbar-info span {
+    margin-right: 15px;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+    color: #66b3ff;
+}
+
+/* Add some margin to the body to prevent content from being hidden behind the navbar */
+body {
+    margin-top: 60px;
+}
