@@ -29,9 +29,10 @@ class DownloadPage {
     function __construct($page_url, $folder_location, $requester_uid) {
         $this->folder_location = $folder_location;
         $this->page_url = $page_url;
+        $this->normalizeUrl($this->page_url);
         list($website_exists, $this->page_url) = $this->doesWebsiteExist($this->page_url);
         // Search for all the regexes that fit the *url* pattern where the pattern is the requested url but without the protocol
-        $page_url_pattern = $this->getCorrectLinkPattern($page_url);
+        $page_url_pattern = $this->getCorrectLinkPattern($this->page_url);
         $simular_pages = Database\Webpage::getArchivePathsByPattern('%' . $page_url_pattern . '%');
         if ($website_exists) {
             $this->folder_name = Database\Webpage::getPagesCount() + 1;
@@ -42,12 +43,24 @@ class DownloadPage {
                 // Fallback and try to download them from the server directly
                 $this->tryDownloadFavicon();
             }
-            Database\Webpage::create($folder_location, $page_url, $requester_uid, $this->favicon_path, $this->page_title);
+            Database\Webpage::create($folder_location, $this->page_url, $requester_uid, $this->favicon_path, $this->page_title);
         } else {
             echo "Website does not exist";
         }
     }
 
+    function normalizeUrl(string &$url) : void {
+        $count_slashes = substr_count($url, "/");
+        if (str_ends_with($url, "/index.html")) {
+            $url = substr($url, 0, strlen($url) - strlen("/index.html"));
+        }
+        elseif (str_ends_with($url, "/index")) {
+            $url = substr($url, 0, strlen($url) - strlen("/index"));
+        }
+        elseif (str_ends_with($url, "/")) {
+            $url = substr($url, 0, -1);
+        }
+    }
 
     private function debugPrintToConsole($data) : void{
          $output = $data;
@@ -474,13 +487,26 @@ function applyCorrectProtocol($url, $protocol) : string {
     return $protocol . $url;
 }
 
-function doesWebsiteExist($url) : bool {
+function normalizeUrl(string &$url) : void {
+    $count_slashes = substr_count($url, "/");
+    if (str_ends_with($url, "/index.html")) {
+        $url = substr($url, 0, strlen($url) - strlen("/index.html"));
+    }
+    elseif (str_ends_with($url, "/index")) {
+        $url = substr($url, 0, strlen($url) - strlen("/index"));
+    }
+    elseif (str_ends_with($url, "/")) {
+        $url = substr($url, 0, -1);
+    }
+}
+
+function doesWebsiteExist($url) : array {
     // Check if the site exists with https
     $https_url = applyCorrectProtocol($url, "https://");
     if ($https_url != $url) {
         $url_headers = @get_headers($https_url);
         if ($url_headers && $url_headers[0] != 'HTTP/1.1 404 Not Found') {
-            return true;
+            return array(true, $https_url);
         }
     }
 
@@ -489,7 +515,7 @@ function doesWebsiteExist($url) : bool {
     if ($http_url != $url) {
         $url_headers = @get_headers($http_url);
         if ($url_headers && $url_headers[0] != 'HTTP/1.1 404 Not Found') {
-            return true;
+            return array(true, $http_url);
         }
     }
 
@@ -497,8 +523,8 @@ function doesWebsiteExist($url) : bool {
     // Will take effect when the user has entered the https/http protocol with the site
     $url_headers = @get_headers($url);
     if ($url_headers && $url_headers[0] != 'HTTP/1.1 404 Not Found') {
-        return true;
+        return array(true, $url);
     }
 
-    return false;
+    return array(false, $url);
 }

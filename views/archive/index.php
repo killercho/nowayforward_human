@@ -3,11 +3,13 @@
     $page = null;
 
     try {
+        list($exists, $url) = Controller\doesWebsiteExist($url);
+        Controller\normalizeUrl($url);
+
         $page = Database\Webpage::fromDB($url);
         $page->incrementVisits();
     }
     catch(Exception $e) {
-        $exists = Controller\doesWebsiteExist($url);
     }
 ?>
 
