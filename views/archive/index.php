@@ -26,8 +26,8 @@
         <section class="item">
             <section>
                 <div>
-                    <img src="<?= "/archives/{$page->WID}/favicon.ico" ?>" class="favicon">
-                    <a href="<?= "/archives/{$page->WID}" ?>"><?= $page->URL ?></a>
+                    <img src="<?= '/archives/' . $page->FaviconPath ?>" class="favicon">
+                    <a href="<?= '/archives/' . $page->WID ?>"><?= $page->URL ?></a>
                     <span class="float-right"><?= $page->Date ?></span>
                 </div>
                 <div class="details">
