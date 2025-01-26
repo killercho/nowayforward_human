@@ -1,11 +1,15 @@
 <?php
+namespace Controller;
+use Database;
+use Exception;
 
 function on_post() {
-    global $status;
-    $status = "";
+    global $user_status;
+    $user_status = "";
+
     try {
         Database\User::fromDB($_POST["username"]);
-        $status = "User \"" . $_POST["username"] . "\" already exists!";
+        $user_status = "User \"" . $_POST["username"] . "\" already exists!";
         return;
     }
     catch(Exception $e) {}
@@ -14,6 +18,6 @@ function on_post() {
         Database\User::create($_POST["username"], $_POST["password"], "User");
     }
     catch(Exception $e) {
-        $status = $e;
+        $user_status = $e;
     }
 }

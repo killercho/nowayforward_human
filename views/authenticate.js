@@ -8,7 +8,7 @@ function requestAuthentication() {
 
         authentication_response = (request.status == 200) ? request.responseText : "";
     }
-    request.open("POST", "/profile/authenticate.php", true);
+    request.open("POST", "/authenticate", true);
     request.setRequestHeader("Authorization", sessionStorage.getItem("token"));
     request.send(null);
 }

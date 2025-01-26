@@ -8,17 +8,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-include '../meta.php';
+try {
+    $headers = apache_request_headers();
+    $user = Database\Cookie::fromDB($headers["Authorization"]);
 
-$user = null;
-runController('user');
-
-if ($user !== null) {
     http_response_code(200);
     header('Content-Type: text/plain');
     echo $user->Username;
 }
-else {
+catch(Exception $e) {
     http_response_code(401);
     header('Content-Type: text/plain');
     echo 'Bad token!';

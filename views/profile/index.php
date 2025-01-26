@@ -1,9 +1,9 @@
 <?php
-    $title = $_GET["user"] . ' - Profile';
-    include '../meta.php';
-
     $user = null;
-    runController('user');
+    try {
+        $user = Database\User::fromDB($username);
+    }
+    catch(Exception $e) {}
 ?>
 
 <?php if ($user !== null): ?>
@@ -12,7 +12,5 @@
         <?= $user->Role ?>
     </section>
 <?php else: ?>
-    <h2>User "<?= $_GET["user"] ?>" doesn't exist!</h2>
+    <h2>User "<?= $username ?>" doesn't exist!</h2>
 <?php endif; ?>
-
-<?php end_page(); ?>

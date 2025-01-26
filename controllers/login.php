@@ -1,9 +1,12 @@
 <?php
+namespace Controller;
+use Database;
+use Exception;
 
 function on_post() {
-    global $status;
+    global $user_status;
     global $token;
-    $status = "";
+    $user_status = "";
 
     try {
         $user = Database\User::fromDB($_POST["username"]);
@@ -11,10 +14,10 @@ function on_post() {
             $token = Database\Cookie::create($user->UID);
         }
         else {
-            $status = "Incorrect password!";
+            $user_status = "Incorrect password!";
         }
     }
     catch(Exception $e) {
-        $status = "User \"" . $_POST["username"] . "\" doesn't exist!";
+        $user_status = "User \"" . $_POST["username"] . "\" doesn't exist!";
     }
 }
