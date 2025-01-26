@@ -7,3 +7,12 @@ function on_get() {
     }
     catch(Exception $e) {}
 }
+
+function on_post() {
+    global $user;
+    try {
+        $headers = apache_request_headers();
+        $user = Database\Cookie::fromDB($headers["Authorization"]);
+    }
+    catch(Exception $e) {}
+}

@@ -16,6 +16,14 @@ class Cookie extends Table {
         );
         return $Token;
     }
+
+    static function fromDB(string $token) : User {
+        $UID = Table::_fromDB(
+            "SELECT UID FROM Cookies WHERE Token = \"$token\"",
+            "Database\Cookie"
+        )->UID;
+        return User::fromDBuid($UID);
+    }
 }
 
 // Taken from https://stackoverflow.com/a/15875555

@@ -9,16 +9,28 @@
     <title><?= htmlspecialchars($title ?? "No Way Forward Human");?></title>
 </head>
 <body>
+    <script type="text/javascript" src="/authenticate.js"></script>
     <header>
         <nav>
             <div class="fadeout-left"></div>
             <a href="/home/index.php">Home</a>
-            <a href="/test/index.php">Test</a>
             <a href="/sample_archive/index.php">Sample Archive</a>
             <div class="flex-expand"></div>
-            <a href="/login/index.php">Login</a>
-            <a href="/register/index.php">Register</a>
+            <a id="login" href="/login/index.php">Login</a>
+            <a id="register" href="/register/index.php">Register</a>
+            <a id="profile" href="/profile/index.php" hidden>Profile</a>
             <div class="fadeout-right"></div>
         </nav>
+        <script type="text/javascript">
+            function updateNavbar(response) {
+                document.getElementById('login').hidden = true;
+                document.getElementById('register').hidden = true;
+
+                const profile = document.getElementById('profile');
+                profile.hidden = false;
+                profile.href += '?user=' + response;
+            }
+            authenticated(updateNavbar);
+        </script>
     </header>
     <article>

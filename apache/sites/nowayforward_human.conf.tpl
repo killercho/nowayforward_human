@@ -10,4 +10,8 @@
   RedirectMatch "^/$" /home/index.php
   RedirectMatch "^/index.html$" /home/index.php
   RedirectMatch "^/index.php$" /home/index.php
+
+  RewriteEngine On
+  RewriteCond %{HTTP:Authorization} ^(.*)
+  RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 </VirtualHost>

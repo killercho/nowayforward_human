@@ -70,6 +70,10 @@ input[type=submit]:hover {
   cursor: pointer;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 /* Generic */
 
 .float-right {
