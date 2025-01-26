@@ -296,11 +296,11 @@ class DownloadPage {
             if (count($correct_results) != 0) {
                 // If there are any links that are the same as the urls make the $dom attribute point
                 // to the latest version of that page
-                $tag->setAttribute($attribute, "../" . $correct_results[0]->WID . "/index.html");
+                $tag->setAttribute($attribute, "/archives/" . $correct_results[0]->WID . "/index.html");
             } else {
                 // If there are no pages that are like that url point to the landing page of the site
                 // that says that this page was not yet archived
-                $tag->setAttribute($attribute, "../../archive/index.php?page_url=" . $this->baseToFullUrlForGet($this->page_url, $link));
+                $tag->setAttribute($attribute, "/archive/?url=" . $this->baseToFullUrlForGet($this->page_url, $link));
             }
         }
     }
