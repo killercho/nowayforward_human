@@ -21,3 +21,11 @@ function on_post() {
         $user_status = "User \"" . $_POST["username"] . "\" doesn't exist!";
     }
 }
+
+function on_delete() {
+    try {
+        $headers = apache_request_headers();
+        Database\Cookie::delete($headers["Authorization"]);
+    }
+    catch(Exception $e) {}
+}

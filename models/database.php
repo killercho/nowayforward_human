@@ -33,6 +33,12 @@ abstract class Table {
         return $id;
     }
 
+    static protected function _delete(string $table, string $condition) {
+        $conn = Table::connect();
+        $query = $conn->query("DELETE FROM $table WHERE $condition");
+        $conn = null;
+    }
+
     static protected function _get_entries_count(string $table) : int {
         $conn = Table::connect();
         $query = $conn->query("SELECT count(*) FROM $table");

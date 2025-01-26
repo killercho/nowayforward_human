@@ -24,6 +24,13 @@ class Cookie extends Table {
         )->UID;
         return User::fromDBuid($UID);
     }
+
+    static function delete(string $token) {
+        Table::_delete(
+            'Cookies',
+            "Token = \"$token\""
+        );
+    }
 }
 
 // Taken from https://stackoverflow.com/a/15875555

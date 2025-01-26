@@ -17,7 +17,8 @@
             <div class="flex-expand"></div>
             <a id="login" href="/login">Login</a>
             <a id="register" href="/register">Register</a>
-            <a id="profile" href="/profile/" hidden>Profile</a>
+            <a id="profile" href="/profile" hidden>Profile</a>
+            <a id="logout" href="/logout" hidden>Logout</a>
             <div class="fadeout-right"></div>
         </nav>
         <script type="text/javascript">
@@ -25,9 +26,10 @@
                 document.getElementById('login').hidden = true;
                 document.getElementById('register').hidden = true;
 
+                document.getElementById('logout').hidden = false;
                 const profile = document.getElementById('profile');
                 profile.hidden = false;
-                profile.href += response;
+                profile.href += '/' + response;
             }
             authenticated(updateNavbar);
         </script>
