@@ -73,7 +73,7 @@ class DownloadPage {
 
     function getCorrectLinkPattern($page_url) : string {
         // NOTE: Offset by 2 because of the '//' of the protocol
-        $page_url = substr($page_url, strpos($page_url, "//") + 2, strlen($page_url));
+        $page_url = substr($page_url, strpos($page_url, "//"), strlen($page_url));
         return $page_url;
     }
 
@@ -139,7 +139,13 @@ class DownloadPage {
             return $relativeUrl;
         }
         // Otherwise resolve it agains the base url
-        return rtrim($baseUrl, '/') . '/' . ltrim($relativeUrl, '/');
+        // Get only the domain with the protocol
+        $pattern = '/((^.*\/\/|.{0,0})[a-z0-9A-Z\.]+)(\/\w+|$)/';
+        $actualUrl = $baseUrl;
+        if (preg_match($pattern, $baseUrl, $matches)) {
+            $actualUrl = $matches[1];
+        }
+        return rtrim($actualUrl, '/') . '/' . ltrim($relativeUrl, '/');
     }
 
     function handleCssUrls(&$content) : void {
