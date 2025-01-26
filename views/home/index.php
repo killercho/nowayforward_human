@@ -15,17 +15,17 @@
 <h1>Most popular archives</h1>
 
 <?php foreach(Database\Webpage::mostVisited(10) as $page): ?>
-    <section class="card" onclick="open_archive('<?php echo $page->URL ?>')">
+    <section class="card" onclick="open_archive('<?= $page->URL ?>')">
         <section class="quickinfo">
-            <a href="<?php echo $page->URL ?>"><?php echo $page->URL ?></a>
-            <span class="float-right"><?php echo $page->Date ?></span>
+            <a href="<?= $page->URL ?>"><?= $page->URL ?></a>
+            <span class="float-right"><?= $page->Date ?></span>
         </section>
         <section class="title">
-            <img src="<?php echo '/archives/' . $page->FaviconPath ?>"></span>
-            <span><?php echo $page->Title ?></span>
+            <img src="<?= '/archives/' . $page->FaviconPath ?>"></span>
+            <span><?= $page->Title ?></span>
         </section>
         <section>
-            <strong>Visits: <?php echo $page->Visits ?></strong>
+            <strong>Visits: <?= $page->Visits ?></strong>
             <strong><!-- Archives count --></strong>
         </section>
     </section>

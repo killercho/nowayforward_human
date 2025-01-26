@@ -8,9 +8,9 @@
 
 <?php if ($user !== null): ?>
     <section>
-        <?php echo $user->Username ?>
-        <?php echo $user->Role ?>
+        <?= $user->Username ?>
+        <?= $user->Role ?>
     </section>
 <?php else: ?>
-    <h2>User "<?php echo $_GET["user"] ?>" doesn't exist!</h2>
+    <h2>User "<?= $_GET["user"] ?>" doesn't exist!</h2>
 <?php endif; ?>

@@ -13,8 +13,8 @@
         <section class="quickinfo">
             <?php print_r($user); ?>
         </section>
-        <strong><?php echo $user->Username ?></strong>
-        <em><?php echo $user->Role ?></em>
+        <strong><?= $user->Username ?></strong>
+        <em><?= $user->Role ?></em>
     </section>
 <?php endforeach;?>
 

@@ -9,7 +9,7 @@
 <?php if ($status !== null): ?>
     <?php if ($status !== ""): ?>
         <p>
-            Fail: <?php echo $status ?>
+            Fail: <?= $status ?>
         </p>
     <?php else: ?>
         <p>
