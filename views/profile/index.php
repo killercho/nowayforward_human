@@ -14,3 +14,5 @@
 <?php else: ?>
     <h2>User "<?= $_GET["user"] ?>" doesn't exist!</h2>
 <?php endif; ?>
+
+<?php end_page(); ?>
