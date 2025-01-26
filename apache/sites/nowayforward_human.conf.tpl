@@ -7,11 +7,13 @@
     SetHandler "proxy:unix:${PHP_FPM_SOCKET}|fcgi://localhost/"
   </FilesMatch>
 
-  RedirectMatch "^/$" /home/index.php
-  RedirectMatch "^/index.html$" /home/index.php
-  RedirectMatch "^/index.php$" /home/index.php
-
   RewriteEngine On
+
   RewriteCond %{HTTP:Authorization} ^(.*)
   RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+  RewriteCond %{REQUEST_URI} !/archives.*
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ /global/router.php
 </VirtualHost>
