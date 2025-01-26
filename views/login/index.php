@@ -10,7 +10,7 @@
             </span></p>
         <?php else: ?>
             <script type="text/javascript">
-                sessionStorage.setItem("token", "<?= $token ?>");
+                cookieStorage.setItem("token", "<?= $token ?>");
                 window.location.href = "/";
             </script>
         <?php endif; ?>

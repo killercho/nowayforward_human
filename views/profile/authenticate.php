@@ -9,8 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 try {
-    $headers = apache_request_headers();
-    $user = Database\Cookie::fromDB($headers["Authorization"]);
+    $user = Database\Cookie::fromDB($TOKEN);
 
     http_response_code(200);
     header('Content-Type: text/plain');

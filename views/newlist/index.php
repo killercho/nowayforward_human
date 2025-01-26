@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    if (!sessionStorage.getItem('token')) {
+    if (!cookieStorage.getItem('token')) {
         window.location.href = '/login';
     }
 </script>
@@ -19,10 +19,5 @@
 
     <input type="text" name="name" placeholder="List title" minlength="1">
     <textarea name="description" placeholder="Description"></textarea>
-    <input id="token" type="hidden" name="token" value="">
     <input type="submit" value="Login">
 </form>
-<script type="text/javascript">
-    const tokenInput = document.getElementById('token');
-    tokenInput.value = sessionStorage.getItem('token');
-</script>

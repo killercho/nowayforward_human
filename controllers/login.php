@@ -23,9 +23,9 @@ function on_post() {
 }
 
 function on_delete() {
+    global $TOKEN;
     try {
-        $headers = apache_request_headers();
-        Database\Cookie::delete($headers["Authorization"]);
+        Database\Cookie::delete($TOKEN);
     }
     catch(Exception $e) {}
 }

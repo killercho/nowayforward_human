@@ -40,6 +40,8 @@ foreach (glob($MODELS_DIR . '/*.php') as $filename) {
     require_once $filename;
 }
 
+$TOKEN = (array_key_exists('token', $_COOKIE)) ? ($_COOKIE['token'] ?? "") : ("");
+
 if (str_ends_with($view, '.php')) {
     require_once $view;
 }

@@ -5,13 +5,15 @@ use DOMDocument;
 use Exception;
 
 function on_post() {
+    global $TOKEN;
+
     $WEBSITE_CATEGORY = 'page_url';
     $DOWNLOADS_FOLDER = getenv('ARCHIVES_DIR');
     $website_url = $_POST[$WEBSITE_CATEGORY];
     $uid = 1;
-    if (array_key_exists('token', $_POST) && strlen($_POST['token']) === 36) {
+    if ($TOKEN !== "") {
         try {
-            $uid = Database\Cookie::fromDB($_POST['token'])->UID;
+            $uid = Database\Cookie::fromDB($TOKEN)->UID;
         }
         catch (Exception $e) {}
     }

@@ -4,11 +4,12 @@ use Database;
 use Exception;
 
 function on_post() {
+    global $TOKEN;
     global $list_status;
     $list_status = "";
 
     try {
-        $uid = Database\Cookie::fromDB($_POST['token'])->UID;
+        $uid = Database\Cookie::fromDB($TOKEN)->UID;
         Database\ArchiveList::create($uid, $_POST["name"], $_POST["description"]);
     }
     catch(Exception $e) {

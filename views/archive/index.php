@@ -18,13 +18,8 @@
 
     <form action="#" method="POST">
         <input type="hidden" name="page_url" value="<?= $url ?>">
-        <input id="token" type="hidden" name="token" value="">
         <input type="submit" value="Archive Now!">
     </form>
-    <script type="text/javascript">
-        const tokenInput = document.getElementById('token');
-        tokenInput.value = sessionStorage.getItem('token');
-    </script>
     <!-- Button to add to list -->
     <!-- Button to delete -->
 
@@ -61,12 +56,7 @@
     <h2>"<?= $url ?>" hasn't been archived yet!</h2>
     <form action="#" method="POST">
         <input type="hidden" name="page_url" value="<?= $url ?>">
-        <input id="token" type="hidden" name="token" value="">
         <input type="submit" value="Archive Now!">
     </form>
-    <script type="text/javascript">
-        const tokenInput = document.getElementById('token');
-        tokenInput.value = sessionStorage.getItem('token');
-    </script>
 
 <?php endif; ?>
