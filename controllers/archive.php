@@ -199,10 +199,7 @@ class DownloadPage {
                 $url = ltrim($url, "./");
                 $url = rtrim($url, "./");
 
-                // Handle relative URLs
-                if (parse_url($url, PHP_URL_SCHEME) === null) {
-                    $url = $this->page_url . $url;
-                }
+                $url = $this->resolveUrl($url, $this->page_url);
 
                 if ($this->isResourceAccessible($url)) {
                     // Get the file name and local path
