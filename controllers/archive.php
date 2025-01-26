@@ -40,6 +40,15 @@ class DownloadPage {
         }
     }
 
+
+    private function debugPrintToConsole($data) : void{
+         $output = $data;
+         if (is_array($output))
+             $output = implode(',', $output);
+
+         echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+    }
+
     function tryDownloadFavicon() : void {
         // Tries to download an icon from the server directly
         // The tried names are favicon.png/ico/jpeg/jpg/svg
@@ -158,10 +167,7 @@ class DownloadPage {
                 $url = rtrim($url, "'()");
                 $url = substr($url, 0, strpos($url, "'"));
 
-                // Handle relative URLs
-                if (parse_url($url, PHP_URL_SCHEME) === null) {
-                    $url = $this->page_url . $url;
-                }
+                $url = $this->resolveUrl($url, $this->page_url);
 
                 if ($this->isResourceAccessible($url)) {
                     // Get the file name and local path
