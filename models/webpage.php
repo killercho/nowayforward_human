@@ -27,6 +27,39 @@ class Webpage extends Table {
         );
     }
 
+    static function getPageById(int $id) : Webpage {
+        return Table::_fromDB(
+            "SELECT * FROM Webpages WHERE WID = \"$id\"",
+            "Database\Webpage"
+        );
+    }
+
+    static function getPreviousPageId(string $url, string $date) : int {
+        $foundId = Table::_get_all(
+            "Webpages",
+            "Database\Webpage",
+            "WHERE URL = \"$url\" && Date < \"$date\" ORDER BY Date DESC LIMIT 1",
+            "WID"
+        );
+        if (count($foundId) > 0) {
+            return $foundId[0]->WID;
+        }
+        return 0;
+    }
+
+    static function getNextPageId(string $url, string $date) : int {
+        $foundId = Table::_get_all(
+            "Webpages",
+            "Database\Webpage",
+            "WHERE URL = \"$url\" && Date > \"$date\" ORDER BY Date ASC LIMIT 1",
+            "WID"
+        );
+        if (count($foundId) > 0) {
+            return $foundId[0]->WID;
+        }
+        return 0;
+    }
+
     static function getPagesCount() : int {
         return Table::_get_entries_count("Webpages");
     }

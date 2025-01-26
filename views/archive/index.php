@@ -12,7 +12,7 @@
 ?>
 
 <?php if ($page !== null): ?>
-    <iframe src="<?= "/archives/{$page->WID}" ?>" scrolling="no"></iframe>
+    <iframe src="<?= "/archives/{$page->WID}/index.php" ?>" scrolling="no"></iframe>
 
     <form action="#" method="POST">
         <input type="hidden" name="page_url" value="<?= $url ?>">
@@ -32,7 +32,7 @@
             <section>
                 <div>
                     <img src="<?= '/archives/' . $page->FaviconPath ?>" class="favicon">
-                    <a href="<?= '/archives/' . $page->WID ?>"><?= $page->URL ?></a>
+                    <a href="<?= '/archives/' . $page->WID . '/index.php' ?>"><?= $page->URL ?></a>
                     <span class="float-right"><?= $page->Date ?></span>
                 </div>
                 <div class="details">

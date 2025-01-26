@@ -339,6 +339,95 @@ class DownloadPage {
         }
     }
 
+    function getArchiveTop() : array {
+        $content = '<?php
+            require_once "../../models/database.php";
+            require_once "../../models/webpage.php";
+            require_once "../../models/user.php";
+
+            function debugPrintToConsole($data) : void {
+                 $output = $data;
+                 if (is_array($output))
+                     $output = implode(",", $output);
+
+                 echo "<script>console.log(\"Debug Objects: " . $output . "\" );</script>";
+            }
+            debugPrintToConsole("This is necessary for some reason, without it the content is not actually shown!");
+
+            $currentPageId = basename(__DIR__);
+            $currentPage = Database\Webpage::getPageById($currentPageId);
+            $requesterUsername = Database\User::fromDBuid($currentPage->RequesterUID);
+
+            $previousPageId = Database\Webpage::getPreviousPageId($currentPage->URL, $currentPage->Date);
+            $nextPageId = Database\Webpage::getNextPageId($currentPage->URL, $currentPage->Date);
+
+            echo "<div class=\"navbar\">";
+            echo "<div class=\"navbar-info\">";
+            echo "<span>Title: $currentPage->Title</span>";
+            echo "<span>Url: $currentPage->URL</span>";
+            echo "<span>Date of archival: $currentPage->Date</span>";
+            echo "<span>Visits: $currentPage->Visits</span>";
+            echo "<span>Requested by: $requesterUsername->Username</span>";
+
+            echo "<div class=\"navbar-links\">";
+            if ($previousPageId != 0) {
+                echo "<a href=\"../$previousPageId/index.php\">Previous version</a>";
+            }
+            if ($nextPageId != 0) {
+                echo "<a href=\"../$nextPageId/index.php\">Next version</a>";
+            }
+            echo "</div>";
+            echo "</div>";
+        ?>';
+
+        $style = '
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #343a40;
+                color: #ffffff;
+                padding: 10px;
+                border-bottom: 1px solid #ccc;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+            }
+
+            .navbar-info {
+                display: flex;
+                justify-content: center;
+                flex-grow: 1;
+            }
+
+            .navbar-info span {
+                margin-right: 15px;
+            }
+
+            .navbar-links {
+                display: flex;
+                gap: 20px;
+            }
+
+            .navbar a {
+                text-decoration: none;
+                color: #007bff;
+            }
+
+            .navbar a:hover {
+                text-decoration: underline;
+                color: #66b3ff;
+            }
+
+            /* Add some margin to the body to prevent content from being hidden behind the navbar */
+            body {
+                margin-top: 60px;
+            }
+        ';
+        return array($content, $style);
+    }
 
     function createArchive($simular_pages) : void {
         // Creates the folder with the correct resources and the main html page in a index.html tag
@@ -360,8 +449,19 @@ class DownloadPage {
 
         $this->changeHyperlinkToLocal($dom, 'a', 'href');
 
+        // Add the header for the archives
+        list($archive_top, $archive_top_style) = $this->getArchiveTop();
+        $phpTag = $dom->createElement('script', $archive_top);
+        $phpTag->setAttribute('type', 'text/php'); // Set the type to PHP
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $body->appendChild($phpTag);
+
+        $styleTag = $dom->createElement('style', $archive_top_style);
+        $head = $dom->getElementsByTagName('head')->item(0);
+        $head->appendChild($styleTag);
+
         $this->page_contents = $dom->saveHTML();
-        $indexFile = fopen($folder_path . '/index.html', "w");
+        $indexFile = fopen($folder_path . '/index.php', "a");
         fwrite($indexFile, $this->page_contents);
         fclose($indexFile);
     }
