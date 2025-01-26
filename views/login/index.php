@@ -14,8 +14,12 @@
         </p>
     <?php else: ?>
         <p>
-            Success! Token: <?php echo $token ?>
+            Success!
         </p>
+        <script type="text/javascript">
+            sessionStorage.setItem("token", "<?= $token ?>");
+            window.location.href = "/home/index.php";
+        </script>
     <?php endif; ?>
 <?php endif; ?>
 
@@ -24,3 +28,4 @@
     <input type="password" name="password" placeholder="Password" minlength="4">
     <input type="submit" value="Login">
 </form>
+
