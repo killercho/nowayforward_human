@@ -38,4 +38,15 @@ class ArchiveList extends Table {
             "(\"$WID\", \"$this->LID\", \"0\")"
         );
     }
+
+    function allItems() : array {
+        return Table::_get_all(
+            'Webpages',
+            'Database\Webpage',
+            "INNER JOIN ArchiveListsWebpages ON Webpages.WID = ArchiveListsWebpages.WID
+             WHERE ArchiveListsWebpages.LID = $this->LID
+             ORDER BY ArchiveListsWebpages.Position ASC",
+            'Webpages.*'
+        );
+    }
 }

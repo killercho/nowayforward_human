@@ -15,6 +15,12 @@
         <p><?= $list->Description ?></p>
         <p><?= $author->Username ?></p>
     </section>
+    <?php foreach($list->allItems() as $webpage): ?>
+        <section>
+            <?= $webpage->URL ?>
+        </section>
+    <?php endforeach; ?>
+
 <?php else: ?>
     <p>
         List doesn't exist
