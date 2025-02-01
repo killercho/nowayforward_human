@@ -1,17 +1,14 @@
-<!-- Dirty hack to escape all PHP dom sanitization and checks -->
-</script>
-
 <?php
     require_once "../../models/database.php";
     require_once "../../models/webpage.php";
     require_once "../../models/user.php";
 
-    $currentPageId = basename(__DIR__);
+    $currentPageId = explode('/', $_SERVER['REQUEST_URI'], 4)[2];
     $currentPage = Database\Webpage::fromDBwid($currentPageId);
-    $requesterUsername = Database\User::fromDBuid($currentPage->RequesterUID);
+    $requester = Database\User::fromDBuid($currentPage->RequesterUID);
 
-    $previousPageId = Database\Webpage::getPreviousPageId($currentPage->URL, $currentPage->Date);
-    $nextPageId = Database\Webpage::getNextPageId($currentPage->URL, $currentPage->Date);
+    $previousPageId = $currentPage->previousPageId();
+    $nextPageId = $currentPage->nextPageId();
 ?>
 
 <div class="navbar">
@@ -20,7 +17,7 @@
         <span>Url: <?= $currentPage->URL ?></span>
         <span>Date of archival: <?= $currentPage->Date ?></span>
         <span>Visits: <?= $currentPage->Visits ?></span>
-        <span>Requested by: <?= $requesterUsername->Username ?></span>
+        <span>Requested by: <?= $requester->Username ?></span>
     </div>
 
     <div class="navbar-links">

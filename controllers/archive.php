@@ -354,13 +354,6 @@ class DownloadPage {
         }
     }
 
-    function getArchiveTop() : array {
-        return array(
-            file_get_contents(__DIR__ . '/../views/archive/topbar.php'),
-            file_get_contents(__DIR__ . '/../views/archive/topbar.css')
-        );
-    }
-
     function createArchive($simular_pages) : void {
         // Creates the folder with the correct resources and the main html page in a index.html tag
         $dom = new DOMDocument();
@@ -382,12 +375,17 @@ class DownloadPage {
         $this->changeHyperlinkToLocal($dom, 'a', 'href');
 
         // Add the header for the archives
-        list($archive_top, $archive_top_style) = $this->getArchiveTop();
-        $phpTag = $dom->createElement('script', $archive_top);
+        $phpTag = $dom->createElement('script', '
+            </script>
+            <?php require_once "' . __DIR__ . '/../views/archive/topbar.php" ?>
+            <script>
+        ');
         $body = $dom->getElementsByTagName('body')->item(0);
         $body->appendChild($phpTag);
 
-        $styleTag = $dom->createElement('style', $archive_top_style);
+        $styleTag = $dom->createElement('link', '');
+        $styleTag->setAttribute('rel', 'stylesheet');
+        $styleTag->setAttribute('href', '/archive/topbar.css');
         $head = $dom->getElementsByTagName('head')->item(0);
         $head->appendChild($styleTag);
 
