@@ -15,11 +15,12 @@
         <p><?= $list->Description ?></p>
         <p><?= $author->Username ?></p>
     </section>
-    <?php foreach($list->allItems() as $webpage): ?>
-        <section>
-            <?= $webpage->URL ?>
-        </section>
-    <?php endforeach; ?>
+    <?php
+        foreach ($list->allItems() as $page) {
+            include $VIEWS_DIR . '/archive/item.php';
+        }
+        include_once $VIEWS_DIR . '/archive/item_show.php';
+    ?>
 
 <?php else: ?>
     <p>

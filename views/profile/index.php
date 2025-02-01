@@ -29,12 +29,12 @@
     </section>
 
     <section id="userLists" hidden>
-    <?php foreach($user->archiveLists() as $list): ?>
-        <section>
-            <?= $list->Name ?>
-            <?= $list->Description ?>
-        </section>
-    <?php endforeach; ?>
+    <?php
+        foreach ($user->archiveLists() as $list) {
+            include $VIEWS_DIR . '/list/item.php';
+        }
+        include_once $VIEWS_DIR . '/list/item_show.php';
+    ?>
     </section>
 
     <script type="text/javascript">
