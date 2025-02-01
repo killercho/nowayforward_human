@@ -62,10 +62,21 @@ abstract class Table {
     }
 
     static protected function connect() : PDO {
-        $conn = new PDO(
-            "mysql:unix_socket=" . getenv('MYSQL_UNIX_SOCKET') . ";dbname=nwfh",
-            getenv('USER'),
-            "");
+        $unix_socket = getenv('MYSQL_UNIX_SOCKET');
+        $conn = null;
+        // Windows support
+        if ($unix_socket == '') {
+            $conn = new PDO(
+                "mysql:host=" . getenv('SERVER') . ";port=" . getenv('PORT') . ";dbname=nwfh",
+                getenv('USER'),
+                getenv('PASSWORD'));
+        }
+        else {
+            $conn = new PDO(
+                "mysql:unix_socket=$unix_socket;dbname=nwfh",
+                getenv('USER'),
+                getenv('PASSWORD'));
+        }
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $conn;

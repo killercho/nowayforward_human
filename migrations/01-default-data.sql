@@ -1,4 +1,4 @@
 USE nwfh;
 
-INSERT INTO Users (Username, Password, Role)
+INSERT IGNORE INTO Users (Username, Password, Role)
 VALUES ("Anon", "", "User");

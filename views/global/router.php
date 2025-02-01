@@ -4,7 +4,14 @@ $VIEWS_DIR = __DIR__ . '/..';
 $CONTROLLERS_DIR = __DIR__ . '/../../controllers';
 $MODELS_DIR = __DIR__ . '/../../models';
 
-$uri = rtrim($_SERVER['REQUEST_URI'], '/');
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+if ($uri === '/nowayforward_human/xampp/setup.php') {
+    http_response_code(301); // Permanent redirect
+    header('Location: /');
+    exit;
+}
+
 $exploded = @explode('/', $uri, 4);
 $root = '/' . @$exploded[1];
 $subroot = '/' . @$exploded[2];

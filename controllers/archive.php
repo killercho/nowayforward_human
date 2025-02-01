@@ -380,7 +380,7 @@ class DownloadPage {
         // Add the header for the archives
         $phpTag = $dom->createElement('script', '
             </script>
-            <?php require_once "' . __DIR__ . '/../views/archive/topbar.php" ?>
+            <?php require_once \'' . __DIR__ . '/../views/archive/topbar.php\' ?>
             <script>
         ');
         $body = $dom->getElementsByTagName('body')->item(0);

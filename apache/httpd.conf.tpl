@@ -30,7 +30,3 @@ User ${USER}
 Group users
 
 AddType application/javascript .js
-
-SetEnv MYSQL_UNIX_SOCKET ${MYSQL_UNIX_SOCKET}
-SetEnv USER ${USER}
-SetEnv ARCHIVES_DIR ${ARCHIVES_DIR}
