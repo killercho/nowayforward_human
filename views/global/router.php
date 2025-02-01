@@ -21,6 +21,7 @@ function route_view() {
 
     switch ($root . $subroot) {
         case '/list/update': return '/list/update';
+        case '/list/new': return '/list/new';
     }
 
     switch ($root) {
@@ -29,7 +30,6 @@ function route_view() {
         case '/register': return '/register';
         case '/login': return '/login';
         case '/logout': return '/logout';
-        case '/newlist': return '/newlist';
         case '/list': return '/list';
 
         case '/authenticate':
