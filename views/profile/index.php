@@ -18,36 +18,12 @@
     <h2 onclick="openArchives()">Archives</h2>
     <h2 onclick="openLists()">Lists</h2>
     <section id="user-archives">
-    <?php foreach ($user->archives() as $page): ?>
-        <section class="item">
-            <section>
-                <div>
-                    <img src="<?= '/archives/' . $page->FaviconPath ?>" class="favicon">
-                    <a href="<?= '/archives/' . $page->WID ?>"><?= $page->URL ?></a>
-                    <span class="float-right"><?= $page->Date ?></span>
-                </div>
-                <div class="details">
-                    <span>Visits: <?= $page->Visits ?></span>
-                    <span class="float-right"><?= Database\User::fromDBuid($page->RequesterUID)->Username ?></span>
-                </div>
-            </section>
-            <section name="itemButton" hidden>
-                <form action="/list/update" method="GET">
-                    <input type="hidden" name="wid" value="<?= $page->WID ?>">
-                    <input type="submit" value="+">
-                </form>
-                <span><!-- Delete (when admin) button --></span>
-            </section>
-        </section>
-    <?php endforeach; ?>
-        <script type="text/javascript">
-            function showButtons() {
-                for (buttonset of document.getElementsByName('itemButton')) {
-                    buttonset.hidden = false;
-                }
-            }
-            authenticated(showButtons);
-        </script>
+    <?php
+        foreach ($user->archives() as $page) {
+            include $VIEWS_DIR . '/archive/item.php';
+        }
+        include_once $VIEWS_DIR . '/archive/item_show.php';
+    ?>
     </section>
 
     <section id="user-lists" hidden>
