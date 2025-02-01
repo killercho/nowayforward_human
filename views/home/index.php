@@ -11,7 +11,7 @@
 
 <h1>Most popular archives</h1>
 
-<?php foreach(Database\Webpage::mostVisited(10) as $page): ?>
+<?php foreach(Database\Webpage::fromDBmostVisited(10) as $page): ?>
     <section class="card" onclick="goto_archive('<?= $page->URL ?>')">
         <section class="quickinfo">
             <a href="<?= $page->URL ?>"><?= $page->URL ?></a>

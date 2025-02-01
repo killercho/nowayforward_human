@@ -31,7 +31,19 @@ class User extends Table {
         );
     }
 
-    static function get_all() : array {
-        return Table::_get_all("Users", "Database\User");
+    function archives() : array {
+        return Table::_get_all(
+            'Webpages',
+            'Database\Webpage',
+            "WHERE RequesterUID = \"$this->UID\" ORDER BY Date DESC"
+        );
+    }
+
+    function archiveLists() : array {
+        return Table::_get_all(
+            'ArchiveLists',
+            'Database\ArchiveList',
+            "WHERE AuthorUID = \"$this->UID\""
+        );
     }
 }

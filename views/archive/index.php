@@ -24,7 +24,7 @@
     <!-- Button to delete -->
 
     <h2>Archives by date:</h2>
-    <?php foreach (Database\Webpage::allArchives($page->URL) as $page): ?>
+    <?php foreach ($page->allArchives() as $page): ?>
         <section class="item">
             <section>
                 <div>

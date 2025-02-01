@@ -18,7 +18,7 @@
     <h2 onclick="openArchives()">Archives</h2>
     <h2 onclick="openLists()">Lists</h2>
     <section id="user-archives">
-    <?php foreach (Database\Webpage::allArchivesByUser($user->UID) as $page): ?>
+    <?php foreach ($user->archives() as $page): ?>
         <section class="item">
             <section>
                 <div>
@@ -51,7 +51,7 @@
     </section>
 
     <section id="user-lists" hidden>
-    <?php foreach(Database\ArchiveList::allListsByUser($user->UID) as $list): ?>
+    <?php foreach($user->archiveLists() as $list): ?>
         <section>
             <?= $list->Name ?>
             <?= $list->Description ?>

@@ -23,14 +23,6 @@ class ArchiveList extends Table {
         );
     }
 
-    static function allListsByUser(int $UID) : array {
-        return Table::_get_all(
-            'ArchiveLists',
-            'Database\ArchiveList',
-            "WHERE AuthorUID = \"$UID\""
-        );
-    }
-
     function addItem(int $WID) {
         Table::_create(
             'ArchiveListsWebpages',

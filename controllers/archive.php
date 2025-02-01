@@ -37,6 +37,9 @@ class DownloadPage {
         $page_url_pattern = $this->getCorrectLinkPattern($this->page_url);
         $simular_pages = Database\Webpage::getArchivePathsByPattern('%' . $page_url_pattern . '%');
         if ($website_exists) {
+            // NOTE: This is incredibly dumb, Databas\Webpage::create returns the
+            // auto-incremented ID, so it should be used here.
+            // The logic needs to be reorganized!
             $this->folder_name = Database\Webpage::getPagesCount() + 1;
             $this->page_contents = $this->downloadFile($this->page_url);
             $this->createArchive($simular_pages);

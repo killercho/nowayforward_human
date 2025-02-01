@@ -4,12 +4,10 @@
 <?php
     $user = null;
     $webpage = null;
-    $lists = null;
 
     try {
         $user = Database\Cookie::fromDB($TOKEN);
         $webpage = Database\Webpage::fromDBwid($_GET['wid']);
-        $lists = Database\ArchiveList::allListsByUser($user->UID);
     }
     catch (Exception $e) {}
 ?>
@@ -22,7 +20,7 @@
 <form action="/list" method="GET">
     <input type="hidden" name="method" value="PATCH">
     <select name="lid">
-        <?php foreach ($lists as $list): ?>
+        <?php foreach ($user->archiveLists() as $list): ?>
             <option value="<?= $list->LID ?>"><?= $list->Name ?></option>
         <?php endforeach; ?>
     </select>

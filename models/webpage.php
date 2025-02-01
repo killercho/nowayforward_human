@@ -34,58 +34,17 @@ class Webpage extends Table {
         );
     }
 
-    static function getPreviousPageId(string $url, string $date) : int {
-        $foundId = Table::_get_all(
-            "Webpages",
-            "Database\Webpage",
-            "WHERE URL = \"$url\" && Date < \"$date\" ORDER BY Date DESC LIMIT 1",
-            "WID"
-        );
-        if (count($foundId) > 0) {
-            return $foundId[0]->WID;
-        }
-        return 0;
-    }
-
-    static function getNextPageId(string $url, string $date) : int {
-        $foundId = Table::_get_all(
-            "Webpages",
-            "Database\Webpage",
-            "WHERE URL = \"$url\" && Date > \"$date\" ORDER BY Date ASC LIMIT 1",
-            "WID"
-        );
-        if (count($foundId) > 0) {
-            return $foundId[0]->WID;
-        }
-        return 0;
-    }
-
+    // TODO: remove this, refer to archive.php
     static function getPagesCount() : int {
         return Table::_get_entries_count("Webpages");
     }
 
-    static function mostVisited(int $count) : array {
+    static function fromDBmostVisited(int $count) : array {
         return Table::_get_all(
             'Webpages',
             'Database\Webpage',
             "GROUP BY URL ORDER BY Visits DESC, Date DESC LIMIT $count",
             'WID,Path,URL,Date,MAX(Visits) as Visits,RequesterUID,FaviconPath,Title'
-        );
-    }
-
-    static function allArchives(string $URL) : array {
-        return Table::_get_all(
-            'Webpages',
-            'Database\Webpage',
-            "WHERE URL = \"$URL\" ORDER BY Date DESC"
-        );
-    }
-
-    static function allArchivesByUser(int $UID) : array {
-        return Table::_get_all(
-            'Webpages',
-            'Database\Webpage',
-            "WHERE RequesterUID = \"$UID\" ORDER BY Date DESC"
         );
     }
 
@@ -96,6 +55,44 @@ class Webpage extends Table {
             "WHERE URL LIKE \"$URLPattern\" ORDER BY Date DESC",
             "Path, WID"
         );
+    }
+
+    function allArchives() : array {
+        return Table::_get_all(
+            'Webpages',
+            'Database\Webpage',
+            "WHERE URL = \"$this->URL\" ORDER BY Date DESC"
+        );
+    }
+
+    function previousPageId() : int {
+        $foundId = Table::_get_all(
+            "Webpages",
+            "Database\Webpage",
+            "WHERE URL = \"$this->URL\" AND Date < \"$this->Date\"
+             ORDER BY Date DESC
+             LIMIT 1",
+            "WID"
+        );
+        if (count($foundId) > 0) {
+            return $foundId[0]->WID;
+        }
+        return 0;
+    }
+
+    function nextPageId() : int {
+        $foundId = Table::_get_all(
+            "Webpages",
+            "Database\Webpage",
+            "WHERE URL = \"$this->URL\" AND Date > \"$this->Date\"
+             ORDER BY Date ASC
+             LIMIT 1",
+            "WID"
+        );
+        if (count($foundId) > 0) {
+            return $foundId[0]->WID;
+        }
+        return 0;
     }
 
     function incrementVisits() {
