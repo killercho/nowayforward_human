@@ -176,11 +176,19 @@ class DownloadPage {
         // Otherwise resolve it agains the base url
         // Get only the domain with the protocol
         $pattern = '/((^.*\/\/|.{0,0})[a-z0-9A-Z\.]+)(\/\w+|$)/';
-        $actualUrl = $baseUrl;
+        $rootUrl = $baseUrl;
         if (preg_match($pattern, $baseUrl, $matches)) {
-            $actualUrl = $matches[1];
+            $rootUrl = $matches[1];
         }
-        return rtrim($actualUrl, '/') . '/' . ltrim($relativeUrl, '/');
+        // Get the url that includes the data relatively from the root
+        $result = rtrim($baseUrl, '/') . '/' . ltrim($relativeUrl, '/');
+        if ($this->isResourceAccessible($result)) {
+            return $result;
+        }
+        // If the resource does not exist there
+        // return a URL from the page url
+        $result = rtrim($rootUrl, '/') . '/' . ltrim($relativeUrl, '/');
+        return $result;
     }
 
     function handleCssUrls(&$content) : void {
@@ -330,7 +338,7 @@ class DownloadPage {
             if (count($correct_results) != 0) {
                 // If there are any links that are the same as the urls make the $dom attribute point
                 // to the latest version of that page
-                $tag->setAttribute($attribute, "/archives/" . $correct_results[0]->WID . "/index.html");
+                $tag->setAttribute($attribute, "/archives/" . $correct_results[0]->WID . "/index.php");
             } else {
                 // If there are no pages that are like that url point to the landing page of the site
                 // that says that this page was not yet archived
