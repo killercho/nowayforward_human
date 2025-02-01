@@ -44,7 +44,7 @@ h1 {
   text-align: center;
 }
 
-input {
+input, button {
   color: inherit;
 
   background-image: url(/paper.jpg);
@@ -319,6 +319,29 @@ hr.new-section {
   border-color: var(--dark-green);
 }
 
+.item [name=itemButton] {
+  border-left: 3px solid var(--dark-purple);
+  margin: -0.5em 0 -0.5em 0.5em;
+  padding: 0.5em 0 0.5em 0.5em;
+  display: flex;
+  flex-direction: column;
+}
+
+.item [name=itemButton] > * {
+  display: flex;
+  flex: 1;
+}
+
+.item [name=itemButton] input,
+.item [name=itemButton] button{
+  box-shadow: none;
+  padding: 0;
+}
+
+.list-icon {
+  color: var(--cherry);
+}
+
 /* User */
 .user-icon {
   height: 7em;
@@ -347,6 +370,7 @@ hr.new-section {
 #user-nav button {
   font-size: 1.3em;
   background-color: var(--dark-green);
+  background-image: none;
   border: none;
   color: inherit;
   padding: 0.3em;
