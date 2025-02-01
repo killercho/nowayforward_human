@@ -15,7 +15,9 @@
 
     <div class="card-blank-afterspace"></div>
 
-    <h2>Archives</h2>
+    <h2 onclick="openArchives()">Archives</h2>
+    <h2 onclick="openLists()">Lists</h2>
+    <section id="user-archives">
     <?php foreach (Database\Webpage::allArchivesByUser($user->UID) as $page): ?>
         <section class="item">
             <section>
@@ -38,14 +40,39 @@
             </section>
         </section>
     <?php endforeach; ?>
-    <script type="text/javascript">
-        function showButtons() {
-            for (buttonset of document.getElementsByName('itemButton')) {
-                buttonset.hidden = false;
+        <script type="text/javascript">
+            function showButtons() {
+                for (buttonset of document.getElementsByName('itemButton')) {
+                    buttonset.hidden = false;
+                }
             }
+            authenticated(showButtons);
+        </script>
+    </section>
+
+    <section id="user-lists" hidden>
+    <?php foreach(Database\ArchiveList::allListsByUser($user->UID) as $list): ?>
+        <section>
+            <?= $list->Name ?>
+            <?= $list->Description ?>
+        </section>
+    <?php endforeach; ?>
+    </section>
+
+    <script type="text/javascript">
+        const userArchives = document.getElementById('user-archives');
+        const userLists = document.getElementById('user-lists');
+
+        function openArchives() {
+            userArchives.hidden = false;
+            userLists.hidden = true;
         }
-        authenticated(showButtons);
+        function openLists() {
+            userArchives.hidden = true;
+            userLists.hidden = false;
+        }
     </script>
+
 <?php else: ?>
     <h2>User "<?= $username ?>" doesn't exist!</h2>
 <?php endif; ?>
