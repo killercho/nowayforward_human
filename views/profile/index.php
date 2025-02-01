@@ -15,6 +15,18 @@
 
     <div class="user-blank-afterspace"></div>
 
+    <section id="user-buttons" hidden>
+        <form action="/list/new" method="GET">
+            <input type="submit" value="Create a new list">
+        </form>
+    </section>
+    <script type="text/javascript">
+        function showUserButtons() {
+            document.getElementById('user-buttons').hidden = false;
+        }
+        authenticated(showUserButtons);
+    </script>
+
     <nav id="user-nav">
         <button id="openArchives" onclick="openArchives()">Archives</button>
         <button id="openLists" onclick="openLists()" class="not-selected">Lists</button>

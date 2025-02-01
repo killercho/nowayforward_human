@@ -6,11 +6,13 @@ use Exception;
 function on_post() {
     global $TOKEN;
     global $list_status;
+    global $lid;
     $list_status = "";
+    $lid = 0;
 
     try {
         $uid = Database\Cookie::fromDB($TOKEN)->UID;
-        Database\ArchiveList::create($uid, $_POST["name"], $_POST["description"]);
+        $lid = Database\ArchiveList::create($uid, $_POST["name"], $_POST["description"]);
     }
     catch(Exception $e) {
         $list_status = $e;

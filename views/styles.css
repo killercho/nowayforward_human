@@ -45,7 +45,7 @@ h1 {
   text-align: center;
 }
 
-input, button {
+input, button, textarea {
   color: inherit;
 
   background-image: url(/paper.jpg);
@@ -61,6 +61,11 @@ input, button {
   min-width: 1em;
 
   box-shadow: 0 0 0.4em var(--dark-purple);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 4em;
 }
 
 input[type=text]:focus {
@@ -392,6 +397,12 @@ hr.new-section {
 
 .user-blank-afterspace {
   height: 4em;
+}
+
+#user-buttons {
+  margin: 0 1em 2em 1em;
+  display: flex;
+  flex-direction: row;
 }
 
 #user-nav {
