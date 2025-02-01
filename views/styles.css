@@ -66,7 +66,7 @@ input[type=text]:focus {
   outline: 2px solid var(--highlight-border-color);
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, button:hover {
   cursor: pointer;
 }
 
@@ -144,7 +144,7 @@ header, article {
   padding: 1em;
 }
 
-nav {
+#global-nav {
   display: flex;
   flex-direction: row;
   gap: 0.2em;
@@ -154,7 +154,7 @@ nav {
   box-shadow: 0
 }
 
-nav > :not(div) {
+#global-nav > :not(div) {
   display: block;
 
   width: fit-content;
@@ -169,17 +169,17 @@ nav > :not(div) {
   padding: 0.6em 0.5em;
 }
 
-nav > :not(div):hover {
+#global-nav > :not(div):hover {
   border: 3px solid var(--highlight-border-color);
   border-bottom: none;
   border-top: none;
 }
 
-nav > :not(div):first-child, nav > div:first-child + * {
+#global-nav > :not(div):first-child, #global-nav > div:first-child + * {
   margin-right: 1em;
 }
 
-nav > .fadeout-left {
+#global-nav > .fadeout-left {
   width: 1em;
   background-color: var(--background-color);
   mask-image: linear-gradient(
@@ -189,7 +189,7 @@ nav > .fadeout-left {
   );
 }
 
-nav > .fadeout-right {
+#global-nav > .fadeout-right {
   width: 1em;
   background-color: var(--background-color);
   mask-image: linear-gradient(
@@ -331,4 +331,40 @@ hr.new-section {
   display: inline-block;
   font-size: 2.5em;
   vertical-align: middle;
+}
+
+.user-blank-afterspace {
+  height: 4em;
+}
+
+#user-nav {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  margin-bottom: 2em;
+}
+
+#user-nav button {
+  font-size: 1.3em;
+  background-color: var(--dark-green);
+  border: none;
+  color: inherit;
+  padding: 0.3em;
+
+  flex: 1;
+  mask-image: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 1) 1em,
+    rgba(0, 0, 0, 1) calc(100% - 1em),
+    rgba(0, 0, 0, 0)
+  );
+}
+
+#user-nav button.not-selected {
+  filter: saturate(80%) brightness(80%);
+}
+
+#user-nav button:hover {
+  filter: none;
 }

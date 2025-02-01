@@ -13,11 +13,13 @@
         <h1 class="username"><?= $user->Username ?></h1>
     </section>
 
-    <div class="card-blank-afterspace"></div>
+    <div class="user-blank-afterspace"></div>
 
-    <h2 onclick="openArchives()">Archives</h2>
-    <h2 onclick="openLists()">Lists</h2>
-    <section id="user-archives">
+    <nav id="user-nav">
+        <button id="openArchives" onclick="openArchives()">Archives</button>
+        <button id="openLists" onclick="openLists()" class="not-selected">Lists</button>
+    </nav>
+    <section id="userArchives">
     <?php
         foreach ($user->archives() as $page) {
             include $VIEWS_DIR . '/archive/item.php';
@@ -26,7 +28,7 @@
     ?>
     </section>
 
-    <section id="user-lists" hidden>
+    <section id="userLists" hidden>
     <?php foreach($user->archiveLists() as $list): ?>
         <section>
             <?= $list->Name ?>
@@ -36,14 +38,20 @@
     </section>
 
     <script type="text/javascript">
-        const userArchives = document.getElementById('user-archives');
-        const userLists = document.getElementById('user-lists');
+        const elemOpenArchives = document.getElementById('openArchives');
+        const elemOpenLists = document.getElementById('openLists');
+        const userArchives = document.getElementById('userArchives');
+        const userLists = document.getElementById('userLists');
 
         function openArchives() {
+            elemOpenArchives.classList.remove('not-selected');
+            elemOpenLists.classList.add('not-selected');
             userArchives.hidden = false;
             userLists.hidden = true;
         }
         function openLists() {
+            elemOpenArchives.classList.add('not-selected');
+            elemOpenLists.classList.remove('not-selected');
             userArchives.hidden = true;
             userLists.hidden = false;
         }

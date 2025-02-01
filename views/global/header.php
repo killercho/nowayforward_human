@@ -11,7 +11,7 @@
 <body>
     <script type="text/javascript" src="/authenticate.js"></script>
     <header>
-        <nav>
+        <nav id="global-nav">
             <div class="fadeout-left"></div>
             <a href="/">Home</a>
             <div class="flex-expand"></div>
