@@ -37,10 +37,7 @@ class DownloadPage {
         $page_url_pattern = $this->getCorrectLinkPattern($this->page_url);
         $simular_pages = Database\Webpage::getArchivePathsByPattern('%' . $page_url_pattern . '%');
         if ($website_exists) {
-            // NOTE: This is incredibly dumb, Databas\Webpage::create returns the
-            // auto-incremented ID, so it should be used here.
-            // The logic needs to be reorganized!
-            $this->folder_name = Database\Webpage::getPagesCount() + 1;
+            $this->folder_name = Database\Webpage::create($folder_location, $this->page_url, $requester_uid, "default", "Default title");
             $this->page_contents = $this->downloadFile($this->page_url);
             $this->createArchive($simular_pages);
             if (!$this->favicon_path) {
@@ -48,7 +45,8 @@ class DownloadPage {
                 // Fallback and try to download them from the server directly
                 $this->tryDownloadFavicon();
             }
-            Database\Webpage::create($folder_location, $this->page_url, $requester_uid, $this->favicon_path, $this->page_title);
+            Database\Webpage::updateNewArchive($this->folder_name, $this->favicon_path, $this->page_title);
+
         } else {
             echo "Website does not exist";
         }

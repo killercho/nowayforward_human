@@ -35,8 +35,13 @@ class Webpage extends Table {
     }
 
     // TODO: remove this, refer to archive.php
+    // NOTE: Why remove? Let it be. Leave the thing alone
     static function getPagesCount() : int {
         return Table::_get_entries_count("Webpages");
+    }
+
+    static function updateNewArchive(int $WID, string $faviconPath, string $newTitle) : void {
+        Table::_update("Webpages", "FaviconPath = \"$faviconPath\", Title = \"$newTitle\"", "WID = $WID");
     }
 
     static function fromDBmostVisited(int $count) : array {
