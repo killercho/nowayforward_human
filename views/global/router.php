@@ -31,6 +31,8 @@ function route_view() {
         case '/list/new': return '/list/new';
         case '/list/add': return '/list/add';
         case '/list/delete': return '/list/delete';
+
+        case '/archive/create': return '/archive/create';
     }
 
     switch ($root) {

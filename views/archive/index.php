@@ -3,8 +3,8 @@
     $page = null;
 
     try {
-        list($exists, $url) = Controller\doesWebsiteExist($url);
-        Controller\normalizeUrl($url);
+        list($exists, $url) = doesWebsiteExist($url);
+        normalizeUrl($url);
 
         $page = Database\Webpage::fromDB($url);
         $page->incrementVisits();
@@ -16,8 +16,8 @@
 <?php if ($page !== null): ?>
     <iframe src="<?= "/archives/{$page->WID}/index.php" ?>" scrolling="no"></iframe>
 
-    <form action="#" method="POST">
-        <input type="hidden" name="page_url" value="<?= $url ?>">
+    <form action="/archive/create" method="POST">
+        <input type="hidden" name="url" value="<?= $url ?>">
         <input type="submit" value="Archive Now!">
     </form>
     <!-- Button to add to list -->
@@ -39,8 +39,8 @@
 
 <?php else: ?>
     <h2>"<?= $url ?>" hasn't been archived yet!</h2>
-    <form action="#" method="POST">
-        <input type="hidden" name="page_url" value="<?= $url ?>">
+    <form action="/archive/create" method="POST">
+        <input type="hidden" name="url" value="<?= $url ?>">
         <input type="submit" value="Archive Now!">
     </form>
 
