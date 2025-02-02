@@ -11,7 +11,7 @@
         </div>
     </section>
     <section name="itemButton" hidden>
-        <form action="/list/update" method="GET">
+        <form action="/list/add" method="GET">
             <input type="hidden" name="wid" value="<?= $page->WID ?>">
             <button>
                 <!-- Tabler icons https://tabler.io/icons -->

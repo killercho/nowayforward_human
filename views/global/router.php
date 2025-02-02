@@ -29,6 +29,7 @@ function route_view() {
     switch ($root . $subroot) {
         case '/list/update': return '/list/update';
         case '/list/new': return '/list/new';
+        case '/list/add': return '/list/add';
     }
 
     switch ($root) {
