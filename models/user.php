@@ -60,6 +60,20 @@ class User extends Table {
 
     private static $AnonUID = 1;
 
+    function update(string $Username, string $Password = null) {
+        // Applicable to Anon user
+        if ($this->Password === '') {
+            throw new Exception('Not modifying system account!');
+        }
+
+        $Password = ($Password === null) ? $this->Password : password_hash($Password, PASSWORD_BCRYPT);
+        Table::_update(
+            'Users',
+            "Username = \"$Username\", Password = \"$Password\"",
+            "UID = \"$this->UID\""
+        );
+    }
+
     function delete() {
         // Applicable to Anon user
         if ($this->Password === '') {

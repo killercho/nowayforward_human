@@ -18,9 +18,8 @@
         <form action="/list/new" method="GET">
             <input type="submit" value="Create a new list">
         </form>
-        <form action="/user/delete" method="GET">
-            <input type="hidden" name="username" value="<?= $user->Username ?>">
-            <input type="submit" value="Delete your account">
+        <form action="/user/settings" method="GET">
+            <input type="submit" value="Account settings">
         </form>
     </section>
     <script type="text/javascript">

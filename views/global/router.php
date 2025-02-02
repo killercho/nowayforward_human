@@ -35,6 +35,7 @@ function route_view() {
         case '/archive/create': return '/archive/create';
 
         case '/user/delete': return '/user/delete';
+        case '/user/settings': return '/user/update';
     }
 
     switch ($root) {
