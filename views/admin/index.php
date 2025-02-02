@@ -35,6 +35,24 @@
         <input type="submit" value="Delete">
     </form>
 
+    <h2>Archive queue</h2>
+
+    <button id="manual-start">Start worker manually</button>
+    <script type="text/javascript">
+        document.getElementById('manual-start').onclick = function() {
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() {
+                if (request.readyState < 4) return;
+
+                console.log(request.responseText);
+            }
+            request.open("POST", "/archive/create", true);
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.withCredentials = true;
+            request.send('async=true&url=localhost&manual=true');
+        }
+    </script>
+
 <?php else: ?>
     <h2>Permission denied, you're not an admin!</h2>
 

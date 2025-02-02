@@ -3,24 +3,76 @@ namespace Controller;
 use Database;
 use DOMDocument;
 use Exception;
+use TypeError;
+use ValueError;
 
 function on_post() {
+    if (!array_key_exists('async', $_POST) || $_POST['async'] !== 'true') {
+        return;
+    }
+
+    session_start();
+
     global $TOKEN;
 
     $WEBSITE_CATEGORY = 'url';
     $DOWNLOADS_FOLDER = getenv('ARCHIVES_DIR');
     $website_url = $_POST[$WEBSITE_CATEGORY];
     $uid = 1;
+    $authorized = false;
     if ($TOKEN !== "") {
         try {
-            $uid = Database\Cookie::fromDB($TOKEN)->UID;
+            $user = Database\Cookie::fromDB($TOKEN);
+            $uid = $user->UID;
+            $authorized = $user->Role === 'Admin';
         }
         catch (Exception $e) {}
     }
-    $currentPage = new DownloadPage($website_url, $DOWNLOADS_FOLDER, $uid);
 
-    header('Location: /archive/?url=' . $website_url);
-    exit();
+    $manual_start = $authorized
+                    && array_key_exists('manual', $_POST)
+                    && $_POST['manual'] === 'true';
+    // The first request to archive a page becomes a "worker", which will archive
+    // the requested page and any other which might be requested in the meantime
+    $start_worker = !array_key_exists('archive_queue', $_SESSION)
+                    || count($_SESSION['archive_queue']) === 0
+                    || $manual_start;
+
+    if (!array_key_exists('archive_queue', $_SESSION)) {
+        $_SESSION['archive_queue'] = array();
+        $_SESSION['archive_current'] = 0;
+    }
+    else if ($start_worker) {
+        $_SESSION['archive_current'] = 0;
+    }
+
+    $current = $_SESSION['archive_current'] + count($_SESSION['archive_queue']);
+    if (!$manual_start) {
+        array_push(
+            $_SESSION['archive_queue'],
+            new DownloadInfo($website_url, $DOWNLOADS_FOLDER, $uid)
+        );
+    }
+
+    if ($start_worker) {
+        while (count($_SESSION['archive_queue']) > 0) {
+            $downloadInfo = $_SESSION['archive_queue'][0];
+            session_write_close();
+
+            try {
+                $downloadInfo->download();
+            }
+            catch(Exception $e) { }
+            catch(TypeError $e) { }
+            catch(ValueError $e) { }
+
+            session_start();
+            array_shift($_SESSION['archive_queue']);
+            $_SESSION['archive_current']++;
+        }
+    }
+    echo $current;
+    exit;
 }
 
 function on_delete() {
@@ -55,6 +107,22 @@ function on_delete() {
 
     header('Location: /archive/?url=' . $webpage->URL);
     exit();
+}
+
+class DownloadInfo {
+    public $page_url;
+    private $folder_location;
+    private $requester_uid;
+
+    function __construct(string $page_url, string $folder_location, string $requester_uid) {
+        $this->page_url = $page_url;
+        $this->folder_location = $folder_location;
+        $this->requester_uid = $requester_uid;
+    }
+
+    function download() : DownloadPage {
+        return new DownloadPage($this->page_url, $this->folder_location, $this->requester_uid);
+    }
 }
 
 class DownloadPage {
