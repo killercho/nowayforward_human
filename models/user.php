@@ -57,4 +57,30 @@ class User extends Table {
             include $VIEWS_DIR . '/img/user-star.svg';
         }
     }
+
+    private static $AnonUID = 1;
+
+    function delete() {
+        // Applicable to Anon user
+        if ($this->Password === '') {
+            throw new Exception('Not deleting system account!');
+        }
+
+        Table::_update(
+            'Webpages',
+            'RequesterUID = "' . self::$AnonUID . '"',
+            "RequesterUID = \"$this->UID\""
+        );
+
+        Table::_update(
+            'ArchiveLists',
+            'AuthorUID = "' . self::$AnonUID . '"',
+            "AuthorUID = \"$this->UID\""
+        );
+
+        Table::_delete(
+            'Users',
+            "UID = \"$this->UID\""
+        );
+    }
 }

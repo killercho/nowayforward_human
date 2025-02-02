@@ -33,6 +33,8 @@ function route_view() {
         case '/list/delete': return '/list/delete';
 
         case '/archive/create': return '/archive/create';
+
+        case '/user/delete': return '/user/delete';
     }
 
     switch ($root) {

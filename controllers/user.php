@@ -21,3 +21,32 @@ function on_post() {
         $user_status = $e;
     }
 }
+
+function on_delete() {
+    global $TOKEN;
+    global $METHOD;
+    global $user_status;
+    $user_status = "";
+
+    try {
+        Database\Cookie::fromDB($TOKEN);
+    }
+    catch (Exception $e) {
+        $user_status = 'Invalid token!';
+        return;
+    }
+
+    $to_delete = null;
+    try {
+        $to_delete = Database\User::fromDBuid($METHOD['uid']);
+    }
+    catch(Exception $e) {
+        $list_status = "The user you're trying to delete doesn't exist!";
+        return;
+    }
+
+    $to_delete->delete();
+
+    header('Location: /');
+    exit();
+}
