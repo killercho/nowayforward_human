@@ -1,6 +1,7 @@
 <?php
     $exists = null;
     $page = null;
+    $user = null;
 
     try {
         list($exists, $url) = doesWebsiteExist($url);
@@ -8,6 +9,8 @@
 
         $page = Database\Webpage::fromDB($url);
         $page->incrementVisits();
+
+        $user = Database\Cookie::fromDB($TOKEN);
     }
     catch(Exception $e) {
     }

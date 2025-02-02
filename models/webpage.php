@@ -107,4 +107,11 @@ class Webpage extends Table {
             "WID = \"{$this->WID}\""
         );
     }
+
+    function delete() {
+        Table::_delete(
+            'Webpages',
+            "WID = \"$this->WID\""
+        );
+    }
 }

@@ -23,6 +23,40 @@ function on_post() {
     exit();
 }
 
+function on_delete() {
+    global $TOKEN;
+    global $METHOD;
+    global $page_status;
+
+    $webpage = null;
+    try {
+        $webpage = Database\Webpage::fromDBwid($METHOD['wid']);
+    }
+    catch(Exception $e) {
+        $page_status = "This webpage doesn't exist!";
+        return;
+    }
+
+    $user = null;
+    try {
+        $user = Database\Cookie::fromDB($TOKEN);
+    }
+    catch(Exception $e) {
+        $list_status = "Invalid cookie!";
+        return;
+    }
+
+    if ($user->Role !== 'Admin') {
+        $list_status = "You're not authorized to delete archives!";
+        return;
+    }
+
+    $webpage->delete();
+
+    header('Location: /archive/?url=' . $webpage->URL);
+    exit();
+}
+
 class DownloadPage {
     private $folder_location;
     private $folder_name;
