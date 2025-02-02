@@ -18,6 +18,23 @@
                 <?= $author->Username ?>
             </p>
             <p><?= $list->Description ?></p>
+
+            <section id="list-buttons" hidden>
+                <form action="/list/update" method="GET">
+                    <input type="hidden" name="lid" value="<?= $list->LID ?>">
+                    <input type="submit" value="Update">
+                </form>
+                <form action="/list/delete" method="GET">
+                    <input type="hidden" name="lid" value="<?= $list->LID ?>">
+                    <input type="submit" value="Delete">
+                </form>
+            </section>
+            <script type="text/javascript">
+                function showListButtons() {
+                    document.getElementById('list-buttons').hidden = false;
+                }
+                authenticated(showListButtons);
+            </script>
         </section>
         <section>
             <?php

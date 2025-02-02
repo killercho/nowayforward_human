@@ -407,6 +407,14 @@ hr.new-section {
   vertical-align: middle;
 }
 
+.list-container #list-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9em;
+  font-size: 0.8em;
+  margin-top: 4em;
+}
+
 /* User */
 .user-icon {
   height: 7em;

@@ -41,4 +41,12 @@ class ArchiveList extends Table {
             'Webpages.*'
         );
     }
+
+    function update(string $newName, string $newDescription) {
+        Table::_update(
+            'ArchiveLists',
+            "Name = \"$newName\", Description = \"$newDescription\"",
+            "LID = \"$this->LID\""
+        );
+    }
 }
