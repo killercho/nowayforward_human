@@ -10,9 +10,9 @@
     catch(Exception $e) {}
 ?>
 
-<?php if ($list !== null && $user->UID === $author->UID): ?>
+<?php if ($list !== null && ($user->UID === $author->UID || $user->Role === 'Admin')): ?>
 
-    <h1>Are you sure you want to delete <?= $user->Username ?>'s "<?= $list->Name ?>"?</h1>
+    <h1>Are you sure you want to delete <?= $author->Username ?>'s "<?= $list->Name ?>"?</h1>
 
     <form action="#" method="POST" class="font-115 flex-col-centered max-width-20 center-margin">
         <input type="hidden" name="method" value="DELETE">

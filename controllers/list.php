@@ -102,7 +102,7 @@ function on_delete() {
     try {
         $user = Database\Cookie::fromDB($TOKEN);
         $author = Database\User::fromDBuid($list->AuthorUID);
-        if ($author->UID !== $user->UID) {
+        if ($author->UID !== $user->UID && $user->Role !== 'Admin') {
             $list_status = "You're not the owner of this list! You have no permission to delete it!";
             return;
         }

@@ -22,14 +22,18 @@
             <p><?= $list->Description ?></p>
 
             <section id="list-buttons" hidden>
-                <form action="/list/update" method="GET">
-                    <input type="hidden" name="lid" value="<?= $list->LID ?>">
-                    <input type="submit" value="Update">
-                </form>
-                <form action="/list/delete" method="GET">
-                    <input type="hidden" name="lid" value="<?= $list->LID ?>">
-                    <input type="submit" value="Delete">
-                </form>
+                <?php if ($user !== null && $user->UID === $author->UID): ?>
+                    <form action="/list/update" method="GET">
+                        <input type="hidden" name="lid" value="<?= $list->LID ?>">
+                        <input type="submit" value="Update">
+                    </form>
+                <?php endif; ?>
+                <?php if ($user !== null && ($user->UID === $author->UID || $user->Role === 'Admin')): ?>
+                    <form action="/list/delete" method="GET">
+                        <input type="hidden" name="lid" value="<?= $list->LID ?>">
+                        <input type="submit" value="Delete">
+                    </form>
+                <?php endif; ?>
             </section>
             <script type="text/javascript">
                 function showListButtons() {
