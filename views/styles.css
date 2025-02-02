@@ -48,7 +48,7 @@ h1 {
 input, button, textarea, select {
   color: inherit;
 
-  background-image: url(/paper.jpg);
+  background-image: url(/img/paper.jpg);
   background-repeat: repeat;
 
   padding: 0.5em;
@@ -237,7 +237,7 @@ hr.new-section {
   gap: 0.5em;
 
   /* color: #404040 */
-  background-image: url(/paper.jpg);
+  background-image: url(/img/paper.jpg);
   background-repeat: repeat;
 
   height: 8.5em;
@@ -283,7 +283,7 @@ hr.new-section {
 
 /* Webpage item */
 .item, .list {
-  background-image: url(/paper.jpg);
+  background-image: url(/img/paper.jpg);
   background-repeat: repeat;
 
   display: flex;
@@ -381,12 +381,42 @@ hr.new-section {
   text-align: center;
 }
 
+/* List */
+.list-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+.list-container > :first-child {
+  flex: 1;
+  font-size: 1.2em;
+}
+
+.list-container > :nth-child(2) {
+  flex: 4;
+  margin-top: 1em;
+}
+
+.list-container .user-info {
+  font-size: 1em;
+}
+
+.list-container .user-info svg {
+  max-height: 1em;
+  vertical-align: middle;
+}
+
 /* User */
 .user-icon {
   height: 7em;
   color: inherit;
-  display: inline-block;
+  display: inline-flex;
   vertical-align: middle;
+}
+
+.user-admin {
+  color: var(--cherry);
 }
 
 .username {

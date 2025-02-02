@@ -46,4 +46,15 @@ class User extends Table {
             "WHERE AuthorUID = \"$this->UID\""
         );
     }
+
+    function icon() {
+        global $VIEWS_DIR;
+        // https://tabler.io/icons
+        if ($this->Role === 'User') {
+            include $VIEWS_DIR . '/img/user.svg';
+        }
+        else {
+            include $VIEWS_DIR . '/img/user-star.svg';
+        }
+    }
 }
