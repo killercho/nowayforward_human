@@ -11,7 +11,7 @@
     catch (Exception $e) {}
 ?>
 
-<?php if ($webpage !== null && $list !== null): ?>
+<?php if ($webpage !== null && $list !== null && $list): ?>
     <h2>
         To which list do you want to add</br>
         <?= $webpage->URL ?></br>
@@ -19,8 +19,15 @@
         <?= $webpage->Date ?>?
     </h2>
 
-    <form action="/list" method="GET" class="font-125 flex-row width-100 center-margin">
+    <form action="#" method="POST" class="font-125 flex-row width-100 center-margin">
         <input type="hidden" name="method" value="PATCH">
+        <?php if (isset($list_status)): ?>
+            <?php if ($list_status !== ""): ?>
+                <p class="item error"><span>
+                    <strong>Error:</strong> <?= $list_status ?>
+                </span></p>
+            <?php endif; ?>
+        <?php endif; ?>
         <select name="lid" class="flex-expand">
             <?php foreach ($list as $list): ?>
                 <option value="<?= $list->LID ?>"><?= $list->Name ?></option>

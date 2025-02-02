@@ -2,4 +2,3 @@
 
 $lid = explode('/', $uri, 4)[2];
 $title = 'List';
-$controller = 'list';

@@ -22,11 +22,14 @@ function on_post() {
 function on_patch() {
     global $TOKEN;
     global $METHOD;
+    global $list_status;
+    $list_status = "";
 
     try {
         $user = Database\Cookie::fromDB($TOKEN);
     }
     catch(Exception $e) {
+        $list_status = "Couldn't retrieve user!";
         return;
     }
 
@@ -35,13 +38,14 @@ function on_patch() {
         $list = Database\ArchiveList::fromDB($METHOD['lid']);
     }
     catch(Exception $e) {
+        $list_status = "Couldn't retrieve list!";
         return;
     }
 
     switch ($METHOD['type']) {
         case 'add': $list->addItem($METHOD['wid']); break;
 
-        default: throw new Exception('Unknown type ' . $METHOD['type']);
+        default: $list_status = 'Unknown action ' . $METHOD['type']; return;
     }
 
     header('Location: /list/' . $list->LID);
