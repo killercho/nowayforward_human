@@ -64,11 +64,20 @@ function redirect(string $href) {
     exit;
 }
 
-function require_login(string $redirect = '/login') {
+function require_login(string $redirect = '/login') : Database\User {
     global $TOKEN;
     if ($TOKEN === '') {
         redirect($redirect);
     }
+
+    $user = null;
+    try {
+        $user = Database\Cookie::fromDB($TOKEN);
+    }
+    catch (Exception $e) {
+        redirect($redirect);
+    }
+    return $user;
 }
 
 if (str_ends_with($view, '.php')) {

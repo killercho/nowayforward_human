@@ -1,14 +1,11 @@
 <?php
-    require_login();
-
+    $user = require_login();
     $list = null;
     $author = null;
-    $user = null;
 
     try {
         $list = Database\ArchiveList::fromDB($_GET['lid'] ?? -1);
         $author = Database\User::fromDBuid($list->AuthorUID);
-        $user = Database\Cookie::fromDB($TOKEN);
     }
     catch(Exception $e) {}
 ?>

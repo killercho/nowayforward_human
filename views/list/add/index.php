@@ -1,11 +1,10 @@
 <?php
-    require_login();
-
+    $user = require_login();
     $webpage = null;
     $list = null;
 
     try {
-        $list = Database\Cookie::fromDB($TOKEN)->archiveLists();
+        $list = $user->archiveLists();
         $webpage = Database\Webpage::fromDBwid($_GET['wid']);
     }
     catch (Exception $e) {}
