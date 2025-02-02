@@ -36,7 +36,7 @@ function route_view() {
     switch ($root) {
         case '/archive': return '/archive';
         case '/user': return '/user';
-        case '/register': return '/register';
+        case '/register': return '/user/create';
         case '/login': return '/login';
         case '/logout': return '/logout';
         case '/list': return '/list';
