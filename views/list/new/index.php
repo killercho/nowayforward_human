@@ -1,12 +1,6 @@
 <?php
-    if (isset($list_status) && $list_status === "") {
-    }
+    require_login();
 ?>
-<script type="text/javascript">
-    if (!cookieStorage.getItem('token')) {
-        window.location.href = '/login';
-    }
-</script>
 
 <h1>Create a new list</h1>
 

@@ -55,6 +55,18 @@ foreach (glob($MODELS_DIR . '/*.php') as $filename) {
 
 $TOKEN = (array_key_exists('token', $_COOKIE)) ? ($_COOKIE['token'] ?? "") : ("");
 
+function redirect(string $href) {
+    echo '<script type="text/javascript">window.location.href = "' . $href . '";</script>';
+    exit;
+}
+
+function require_login() {
+    global $TOKEN;
+    if ($TOKEN === '') {
+        redirect('/login');
+    }
+}
+
 if (str_ends_with($view, '.php')) {
     require_once $view;
 }
