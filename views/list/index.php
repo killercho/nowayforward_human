@@ -38,10 +38,16 @@
         </section>
         <section>
             <?php
-                foreach ($list->allItems() as $page) {
-                    include $VIEWS_DIR . '/archive/item.php';
+                $items = $list->allItems();
+                if (!$items) {
+                    echo '<h1>No archives</h1>';
                 }
-                include_once $VIEWS_DIR . '/archive/item_show.php';
+                else {
+                    foreach ($list->allItems() as $page) {
+                        include $VIEWS_DIR . '/archive/item.php';
+                    }
+                    include_once $VIEWS_DIR . '/archive/item_show.php';
+                }
             ?>
         </section>
     </section>
