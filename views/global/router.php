@@ -35,14 +35,14 @@ function route_view() {
 
     switch ($root) {
         case '/archive': return '/archive';
-        case '/profile': return '/profile';
+        case '/user': return '/user';
         case '/register': return '/register';
         case '/login': return '/login';
         case '/logout': return '/logout';
         case '/list': return '/list';
 
         case '/authenticate':
-            return '/profile/authenticate.php';
+            return '/user/authenticate.php';
     }
 
     http_response_code(404);

@@ -4,7 +4,7 @@
             <h2>
                 <?= $list->Name ?>
             </h2>
-            <a href="<?= '/profile/' . $user->Username ?>" class="float-right">
+            <a href="<?= '/user/' . $user->Username ?>" class="float-right">
                 <?= $user->Username ?>
             </a>
         </div>
