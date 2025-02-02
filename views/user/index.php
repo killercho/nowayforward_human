@@ -21,6 +21,11 @@
         <form action="/user/settings" method="GET">
             <input type="submit" value="Account settings">
         </form>
+        <?php if ($user->Role === 'Admin'): ?>
+            <form action="/admin" method="GET">
+                <input type="submit" value="Admin panel">
+            </form>
+        <?php endif; ?>
     </section>
     <script type="text/javascript">
         function showUserButtons() {

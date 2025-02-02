@@ -46,6 +46,7 @@ function route_view() {
         case '/login': return '/session/create';
         case '/logout': return '/session/delete';
         case '/list': return '/list';
+        case '/admin': return '/admin';
 
         case '/authenticate':
             return '/user/authenticate.php';
