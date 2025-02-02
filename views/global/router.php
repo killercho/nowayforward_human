@@ -30,6 +30,7 @@ function route_view() {
         case '/list/update': return '/list/update';
         case '/list/new': return '/list/new';
         case '/list/add': return '/list/add';
+        case '/list/delete': return '/list/delete';
     }
 
     switch ($root) {

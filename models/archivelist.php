@@ -49,4 +49,11 @@ class ArchiveList extends Table {
             "LID = \"$this->LID\""
         );
     }
+
+    function delete() {
+        Table::_delete(
+            'ArchiveLists',
+            "LID = \"$this->LID\""
+        );
+    }
 }
