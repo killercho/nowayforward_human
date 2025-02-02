@@ -65,8 +65,9 @@ function on_delete() {
     global $user_status;
     $user_status = "";
 
+    $user = null;
     try {
-        Database\Cookie::fromDB($TOKEN);
+        $user = Database\Cookie::fromDB($TOKEN);
     }
     catch (Exception $e) {
         $user_status = 'Invalid token!';
@@ -79,6 +80,11 @@ function on_delete() {
     }
     catch(Exception $e) {
         $list_status = "The user you're trying to delete doesn't exist!";
+        return;
+    }
+
+    if ($user->UID !== $to_delete->UID && $user->Role !== 'Admin') {
+        $list_status = 'You have no permission to delete this user!';
         return;
     }
 

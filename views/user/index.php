@@ -1,7 +1,9 @@
 <?php
     $user = null;
+    $loggedin = null;
     try {
         $user = Database\User::fromDB($username);
+        $loggedin = Database\Cookie::fromDB($TOKEN);
     }
     catch(Exception $e) {}
 ?>
@@ -15,16 +17,18 @@
     <div class="user-blank-afterspace"></div>
 
     <section id="user-buttons" hidden>
-        <form action="/list/new" method="GET">
-            <input type="submit" value="Create a new list">
-        </form>
-        <form action="/user/settings" method="GET">
-            <input type="submit" value="Account settings">
-        </form>
-        <?php if ($user->Role === 'Admin'): ?>
-            <form action="/admin" method="GET">
-                <input type="submit" value="Admin panel">
+        <?php if ($user !== null && $loggedin !== null && $user->UID === $loggedin->UID): ?>
+            <form action="/list/new" method="GET">
+                <input type="submit" value="Create a new list">
             </form>
+            <form action="/user/settings" method="GET">
+                <input type="submit" value="Account settings">
+            </form>
+            <?php if ($user->Role === 'Admin'): ?>
+                <form action="/admin" method="GET">
+                    <input type="submit" value="Admin panel">
+                </form>
+            <?php endif; ?>
         <?php endif; ?>
     </section>
     <script type="text/javascript">

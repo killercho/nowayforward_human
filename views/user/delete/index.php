@@ -8,7 +8,7 @@
     catch(Exception $e) {}
 ?>
 
-<?php if ($to_delete !== null && $user->UID === $to_delete->UID): ?>
+<?php if ($to_delete !== null && ($user->UID === $to_delete->UID || $user->Role === 'Admin')): ?>
     <h1>Are you sure you want to delete <?= $to_delete->Username ?>?</h1>
 
     <form action="#" method="POST" class="font-115 flex-col-centered max-width-20 center-margin">

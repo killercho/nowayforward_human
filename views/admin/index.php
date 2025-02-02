@@ -28,6 +28,13 @@
         <input type="submit" value="Modify">
     </form>
 
+    <h2>Delete</h2>
+
+    <form action="/user/delete" method="GET" class="font-115">
+        <input type="text" name="username" placeholder="Username">
+        <input type="submit" value="Delete">
+    </form>
+
 <?php else: ?>
     <h2>Permission denied, you're not an admin!</h2>
 
