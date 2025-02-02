@@ -1,4 +1,4 @@
 <?php
 
 $title = 'Logging out';
-$controller = 'login';
+$controller = 'session';

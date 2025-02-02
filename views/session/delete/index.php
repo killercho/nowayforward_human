@@ -1,10 +1,10 @@
+<?php
+    require_login('/');
+?>
+
 <h2>Logging you out...</h2>
 
 <script type="text/javascript">
-    if (!cookieStorage.getItem('token')) {
-        window.location.href = '/';
-    }
-
     function deleteToken(response) {
         let request = new XMLHttpRequest();
         request.onreadystatechange = function() {

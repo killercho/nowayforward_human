@@ -37,8 +37,8 @@ function route_view() {
         case '/archive': return '/archive';
         case '/user': return '/user';
         case '/register': return '/user/create';
-        case '/login': return '/login';
-        case '/logout': return '/logout';
+        case '/login': return '/session/create';
+        case '/logout': return '/session/delete';
         case '/list': return '/list';
 
         case '/authenticate':
@@ -62,10 +62,10 @@ function redirect(string $href) {
     exit;
 }
 
-function require_login() {
+function require_login(string $redirect = '/login') {
     global $TOKEN;
     if ($TOKEN === '') {
-        redirect('/login');
+        redirect($redirect);
     }
 }
 
