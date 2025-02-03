@@ -17,7 +17,7 @@
 ?>
 
 <?php if ($page !== null): ?>
-    <iframe src="<?= "/archives/{$page->WID}/index.php" ?>" scrolling="no"></iframe>
+    <iframe src="<?= "/archives/{$page->WID}/index.php" ?>" scrolling="no" sandbox></iframe>
 
     <form action="/archive/create" method="POST">
         <input type="hidden" name="url" value="<?= $url ?>">
