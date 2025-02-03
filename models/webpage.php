@@ -40,7 +40,7 @@ class Webpage extends Table {
         return Table::_get_entries_count("Webpages");
     }
 
-    static function updateNewArchive(int $WID, string $faviconPath, string $newTitle) : void {
+    static function updateNewArchive(int $WID, ?string $faviconPath, ?string $newTitle) : void {
         Table::_update("Webpages", "FaviconPath = \"$faviconPath\", Title = \"$newTitle\"", "WID = $WID");
     }
 
