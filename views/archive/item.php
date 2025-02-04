@@ -7,7 +7,14 @@
         </div>
         <div class="details">
             <span>Visits: <?= $page->Visits ?></span>
+            <iframe id="printFrame" src="<?= '/archives/' . $page->WID . '/index.php' ?>" style="display:none;"></iframe>
             <span class="float-right"><?= Database\User::fromDBuid($page->RequesterUID)->Username ?></span>
+            <form action="/list/export/index.php" method="GET">
+                <input type="hidden" name="wid" value="<?= $page->WID ?>">
+                <input type="hidden" name="title" value="<?= $page->Title ?>">
+                <input type="hidden" name="url" value="<?= $page->URL ?>">
+                <button>Export to PDF</button>
+            </form>
         </div>
     </section>
     <section name="itemButton" hidden>
