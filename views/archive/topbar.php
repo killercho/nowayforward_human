@@ -11,8 +11,8 @@
     $nextPageId = $currentPage->nextPageId();
 ?>
 
-<div class="navbar">
-    <div class="navbar-info">
+<div class="nwfh-navbar">
+    <div class="nwfh-navbar-info">
         <span>Title: <?= $currentPage->Title ?></span>
         <span>Url: <?= $currentPage->URL ?></span>
         <span>Date of archival: <?= $currentPage->Date ?></span>
@@ -20,7 +20,7 @@
         <span>Requested by: <?= $requester->Username ?></span>
     </div>
 
-    <div class="navbar-links">
+    <div class="nwfh-navbar-links">
         <? if ($previousPageId != 0): ?>
             <a href="<?= "../$previousPageId/index.php" ?>">Previous version</a>
         <? endif; ?>

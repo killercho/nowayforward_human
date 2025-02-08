@@ -1,4 +1,4 @@
-.navbar {
+.nwfh-navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -13,27 +13,27 @@
     z-index: 1000000;
 }
 
-.navbar-info {
+.nwfh-navbar-info {
     display: flex;
     justify-content: center;
     flex-grow: 1;
 }
 
-.navbar-info span {
+.nwfh-navbar-info span {
     margin-right: 15px;
 }
 
-.navbar-links {
+.nwfh-navbar-links {
     display: flex;
     gap: 20px;
 }
 
-.navbar a {
+.nwfh-navbar a {
     text-decoration: none;
     color: #007bff;
 }
 
-.navbar a:hover {
+.nwfh-navbar a:hover {
     text-decoration: underline;
     color: #66b3ff;
 }
