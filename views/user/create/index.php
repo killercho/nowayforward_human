@@ -12,6 +12,10 @@
             <p class="item success">
                 Success!
             </p>
+            <script type="text/javascript">
+                cookieStorage.setItem("token", "<?= $token ?>");
+                window.location.href = "/";
+            </script>
         <?php endif; ?>
     <?php endif; ?>
 

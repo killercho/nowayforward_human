@@ -5,6 +5,7 @@ use Exception;
 
 function on_post() {
     global $user_status;
+    global $token;
     $user_status = "";
 
     try {
@@ -15,7 +16,8 @@ function on_post() {
     catch(Exception $e) {}
 
     try {
-        Database\User::create($_POST["username"], $_POST["password"], "User");
+        $uid = Database\User::create($_POST["username"], $_POST["password"], "User");
+        $token = Database\Cookie::create($uid);
     }
     catch(Exception $e) {
         $user_status = $e;
