@@ -28,7 +28,12 @@ function requestAuthentication() {
     request.onreadystatechange = function() {
         if (request.readyState < 4) return;
 
-        authentication_response = (request.status == 200) ? request.responseText : "";
+        if (request.status == 200) {
+            authentication_response = request.responseText;
+        }
+        else if (request.status == 410) {
+            cookieStorage.removeItem('token');
+        }
     }
     request.open("POST", "/authenticate", true);
     request.send(null);
