@@ -17,6 +17,7 @@
 <?php if ($page !== null): ?>
     <iframe src="<?= "/archives/{$page->WID}/index.php" ?>" scrolling="no" sandbox></iframe>
 
+    <p></p>
     <form action="/archive/create" method="POST">
         <input type="hidden" name="url" value="<?= $url ?>">
         <input type="submit" value="Archive Now!">
