@@ -25,10 +25,17 @@ class Cookie extends Table {
         return User::fromDBuid($UID);
     }
 
-    static function delete(string $token) {
+    static function fromDBtoken(string $token) : Cookie {
+        return Table::_fromDB(
+            "SELECT * FROM Cookies WHERE Token = \"$token\"",
+            'Database\Cookie'
+        );
+    }
+
+    function delete() {
         Table::_delete(
             'Cookies',
-            "Token = \"$token\""
+            "Token = \"$this->Token\""
         );
     }
 }

@@ -25,7 +25,8 @@ function on_post() {
 function on_delete() {
     global $TOKEN;
     try {
-        Database\Cookie::delete($TOKEN);
+        $token = Database\Cookie::fromDBtoken($TOKEN);
+        $token->delete();
     }
     catch(Exception $e) {}
 }
