@@ -8,8 +8,6 @@
         normalizeUrl($url);
 
         $page = Database\Webpage::fromDB($url);
-        $page->incrementVisits();
-
         $user = Database\Cookie::fromDB($TOKEN);
     }
     catch(Exception $e) {

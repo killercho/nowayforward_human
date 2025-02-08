@@ -29,3 +29,13 @@
         <? endif; ?>
     </div>
 </div>
+
+<script type="text/javascript">
+// If not in iframe
+if (window.self === window.top) {
+    var request = new XMLHttpRequest();
+    request.open("POST", "/archive/visit.php", true);
+    request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    request.send('wid=' + <?= $currentPage->WID ?>);
+}
+</script>
