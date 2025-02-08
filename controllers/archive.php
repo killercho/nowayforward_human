@@ -17,7 +17,7 @@ function on_post() {
 
     $WEBSITE_CATEGORY = 'url';
     $DOWNLOADS_FOLDER = getenv('ARCHIVES_DIR');
-    $website_url = $_POST[$WEBSITE_CATEGORY];
+    $website_url = htmlspecialchars($_POST[$WEBSITE_CATEGORY]);
     $uid = 1;
     $authorized = false;
     if ($TOKEN !== "") {
