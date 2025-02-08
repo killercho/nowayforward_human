@@ -16,6 +16,9 @@
   SetEnv PASSWORD ${PASSWORD}
   SetEnv MYSQL_UNIX_SOCKET ${MYSQL_UNIX_SOCKET}
 
+  # 5 minutes
+  TimeOut 300
+
   # Project
   SetEnv ARCHIVES_DIR ${ARCHIVES_DIR}
 

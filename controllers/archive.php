@@ -6,6 +6,9 @@ use Exception;
 use TypeError;
 use ValueError;
 
+// 5 minutes
+set_time_limit(300);
+
 function on_post() {
     if (!array_key_exists('async', $_POST) || $_POST['async'] !== 'true') {
         return;
