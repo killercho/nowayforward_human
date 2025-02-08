@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS Webpages (
     Visits       INT          NOT NULL,
     RequesterUID INT          NOT NULL,
     FaviconPath  VARCHAR(512),
-    Title        VARCHAR(64),
+    Title        VARCHAR(512),
     PRIMARY KEY (WID),
     FOREIGN KEY (RequesterUID) REFERENCES Users(UID)
 );
