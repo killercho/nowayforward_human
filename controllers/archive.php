@@ -500,8 +500,14 @@ class DownloadPage {
         $styleTag = $dom->createElement('link', '');
         $styleTag->setAttribute('rel', 'stylesheet');
         $styleTag->setAttribute('href', '/archive/topbar.css');
+
+        $printStyleTag = $dom->createElement('style', '
+            @page { margin: 0 !important; padding: 0 !important; }
+        ');
+
         $head = $dom->getElementsByTagName('head')->item(0);
         $head->appendChild($styleTag);
+        $head->appendChild($printStyleTag);
 
         $this->page_contents = $dom->saveHTML();
         $indexFile = fopen($folder_path . '/index.php', "a");
