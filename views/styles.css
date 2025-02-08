@@ -328,7 +328,7 @@ hr.new-section {
   border-color: var(--dark-green);
 }
 
-.item [name=itemButton] {
+.item [name=itemButton], .item .global-buttons {
   border-left: 3px solid var(--dark-purple);
   margin: -0.5em 0 -0.5em 0.5em;
   padding: 0.5em 0 0.5em 0.5em;
@@ -337,21 +337,26 @@ hr.new-section {
   gap: 0.3em;
 }
 
-.item [name=itemButton] > * {
+.item [name=itemButton] > *, .item .global-buttons > * {
   display: flex;
   align-items: end;
   flex: 1;
 }
 
 .item [name=itemButton] input,
-.item [name=itemButton] button{
+.item [name=itemButton] button,
+.item .global-buttons input,
+.item .global-buttons button {
   box-shadow: none;
   padding: 0;
 }
 
+.other-icon, .list-icon {
+  height: 1.3em;
+}
+
 .list-icon {
   color: var(--cherry);
-  height: 1.3em;
 }
 
 /* List item */
