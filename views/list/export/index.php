@@ -14,7 +14,7 @@
         $url = $_GET['url'];
         $title = $_GET['title'];
         $wid = $_GET['wid'];
-        $archive_dir = __DIR__ . '/../../../.archives/' . $wid;
+        $archive_dir = getenv('ARCHIVES_DIR') . '/' . $wid;
         $html = file_get_contents($archive_dir . '/index.php');
 
         $dompdf = new Dompdf();
