@@ -81,6 +81,10 @@ input[type=submit]:hover, button:hover, select:hover {
   display: none !important;
 }
 
+script {
+  display: none !important;
+}
+
 /* Generic */
 
 .float-right {
