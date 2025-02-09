@@ -16,26 +16,26 @@
             <input type="hidden" name="wid" value="<?= $page->WID ?>">
             <input type="hidden" name="title" value="<?= $page->Title ?>">
             <input type="hidden" name="url" value="<?= $page->URL ?>">
-            <button><?php include $VIEWS_DIR . '/img/pdf-export.svg' ?></button>
+            <button title="Export as PDF!"><?php include $VIEWS_DIR . '/img/pdf-export.svg' ?></button>
         </form>
-        <button id="copy-to-clipboard" title="Copy to clipboard!"><?php include $VIEWS_DIR . '/img/link.svg' ?></button>
+        <button id="copy-to-clipboard" title="Copy link to clipboard!"><?php include $VIEWS_DIR . '/img/link.svg' ?></button>
         <script type="text/javascript">
             const ctc = document.getElementById('copy-to-clipboard');
             ctc.onclick = function () {
                 navigator.clipboard.writeText('<?= getenv("HTTP_HOST") . "/archives/" . $page->WID . "/index.php" ?>');
-                alert("Copied to clipboard!");
+                alert("Copied link to clipboard!");
             };
         </script>
     </section>
     <section name="itemButton" hidden>
         <form action="/list/add" method="GET">
             <input type="hidden" name="wid" value="<?= $page->WID ?>">
-            <button><?php include $VIEWS_DIR . '/img/add-list.svg' ?></button>
+            <button title="Add to a list!"><?php include $VIEWS_DIR . '/img/add-list.svg' ?></button>
         </form>
         <?php if ($user !== null && $user->Role === 'Admin'): ?>
             <form action="/archive/delete" method="GET">
                 <input type="hidden" name="wid" value="<?= $page->WID ?>">
-                <button><?php include $VIEWS_DIR . '/img/delete.svg' ?></button>
+                <button title="Delete archive!"><?php include $VIEWS_DIR . '/img/delete.svg' ?></button>
             </form>
         <?php else: ?>
             <span></span>

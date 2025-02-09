@@ -16,13 +16,13 @@
         <?php if ($user !== null && $user->UID === $list->AuthorUID): ?>
             <form action="/list/update" method="GET">
                 <input type="hidden" name="lid" value="<?= $list->LID ?>">
-                <button><?php include $VIEWS_DIR . '/img/edit.svg' ?></button>
+                <button title="Edit the list!"><?php include $VIEWS_DIR . '/img/edit.svg' ?></button>
             </form>
         <?php endif; ?>
         <?php if ($user !== null && ($user->UID === $list->AuthorUID || $user->Role === 'Admin')): ?>
             <form action="/list/delete" method="GET">
                 <input type="hidden" name="lid" value="<?= $list->LID ?>">
-                <button><?php include $VIEWS_DIR . '/img/delete.svg' ?></button>
+                <button title="Delete the list!"><?php include $VIEWS_DIR . '/img/delete.svg' ?></button>
             </form>
         <?php endif; ?>
     </section>
