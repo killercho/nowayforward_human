@@ -7,7 +7,7 @@
         </div>
         <div class="details">
             <span>Visits: <?= $page->Visits ?></span>
-            <iframe id="printFrame" src="<?= '/archives/' . $page->WID . '/index.php' ?>" style="display:none;"></iframe>
+            <iframe id="printFrame" src="<?= '/archives/' . $page->WID . '/index.php' ?>" hidden sandbox></iframe>
             <span class="float-right"><?= Database\User::fromDBuid($page->RequesterUID)->Username ?></span>
         </div>
     </section>
