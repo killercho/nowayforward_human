@@ -8,8 +8,8 @@
         <span><?= $page->Title ?></span>
     </section>
     <section>
-        <strong>Visits: <?= $page->Visits ?></strong>
-        <strong><!-- Archives count --></strong>
+        <strong>Visits: <?= $page->totalViewCount() ?></strong>
+        <strong>Archives: <?= count($page->allArchives()) ?></strong>
     </section>
 </section>
 

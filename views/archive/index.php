@@ -20,8 +20,9 @@
     <h1 id="page-header"><?= $page->URL ?></h1>
 
     <p id="page-info">
-        Archived <b><?= count($archives) ?></b> times,
-        between
+        Viewed <b><?= $page->totalViewCount() ?></b> times,
+        accross <b><?= count($archives) ?></b> archives,
+        created between
         <b><?php echo end($archives)->Date; reset($archives); ?></b>
         and
         <b><?= current($archives)->Date ?></b>

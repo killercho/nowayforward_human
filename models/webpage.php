@@ -70,6 +70,15 @@ class Webpage extends Table {
         );
     }
 
+    function totalViewCount() : int {
+        return Table::_get_all(
+            'Webpages',
+            'Database\Webpage',
+            "WHERE URL = \"$this->URL\"",
+            "SUM(Visits) as WID"
+        )[0]->WID;
+    }
+
     function previousPageId() : int {
         $foundId = Table::_get_all(
             "Webpages",

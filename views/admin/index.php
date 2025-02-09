@@ -3,9 +3,11 @@
 ?>
 
 <?php if ($user->Role === 'Admin'): ?>
+    <h1>Global settings</h1>
+
     <h2>Change role</h2>
 
-    <form action="#" method="POST" class="font-115">
+    <form action="#" method="POST" class="font-115 flex-row">
         <input type="hidden" name="method" value="PATCH">
         <?php if (isset($role_status)): ?>
             <?php if ($role_status !== ""): ?>
@@ -30,7 +32,7 @@
 
     <h2>Delete</h2>
 
-    <form action="/user/delete" method="GET" class="font-115">
+    <form action="/user/delete" method="GET" class="font-115 flex-row">
         <input type="text" name="username" placeholder="Username">
         <input type="submit" value="Delete">
     </form>
