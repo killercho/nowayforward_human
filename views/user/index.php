@@ -82,12 +82,18 @@
             elemOpenLists.classList.add('not-selected');
             userArchives.hidden = false;
             userLists.hidden = true;
+            location.hash = 'archives';
         }
         function openLists() {
             elemOpenArchives.classList.add('not-selected');
             elemOpenLists.classList.remove('not-selected');
             userArchives.hidden = true;
             userLists.hidden = false;
+            location.hash = 'lists';
+        }
+
+        if (location.hash.slice(1) === 'lists') {
+            openLists();
         }
     </script>
 
