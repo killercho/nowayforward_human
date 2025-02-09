@@ -18,14 +18,7 @@
             <input type="hidden" name="url" value="<?= $page->URL ?>">
             <button title="Export as PDF!"><?php include $VIEWS_DIR . '/img/pdf-export.svg' ?></button>
         </form>
-        <button id="copy-to-clipboard" title="Copy link to clipboard!"><?php include $VIEWS_DIR . '/img/link.svg' ?></button>
-        <script type="text/javascript">
-            const ctc = document.getElementById('copy-to-clipboard');
-            ctc.onclick = function () {
-                navigator.clipboard.writeText('<?= getenv("HTTP_HOST") . "/archives/" . $page->WID . "/index.php" ?>');
-                alert("Copied link to clipboard!");
-            };
-        </script>
+        <button id="copy-to-clipboard" title="Copy link to clipboard!" onclick="copyLink('<?= getenv("HTTP_HOST") . "/archives/" . $page->WID . "/index.php" ?>')"><?php include $VIEWS_DIR . '/img/link.svg' ?></button>
     </section>
     <section name="itemButton" hidden>
         <form action="/list/add" method="GET">

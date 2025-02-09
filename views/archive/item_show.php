@@ -5,4 +5,9 @@
         }
     }
     authenticated(showButtons);
+
+    function copyLink(url) {
+        navigator.clipboard.writeText(url);
+        alert("Copied link to clipboard!");
+    }
 </script>
