@@ -36,7 +36,13 @@ function updatePosition(url) {
             return;
         }
 
-        position.innerText = queuePos - request.responseText;
+        let pos = queuePos - request.responseText;
+        if (pos === NaN) {
+            position.innerText = 'Archival timeouted! Archive is incomplete!';
+        }
+        else {
+            position.innerText = pos;
+        }
         setTimeout(updatePosition, 1000, url);
     }
     request.open("POST", "/archive/create/status.php", true);
