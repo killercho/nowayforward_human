@@ -20,8 +20,8 @@
     <h1 id="page-header"><?= $page->URL ?></h1>
 
     <p id="page-info">
-        Viewed <b><?= $page->totalViewCount() ?></b> times,
-        accross <b><?= count($archives) ?></b> archives,
+        Viewed <b><?= $page->totalViewCount() ?></b> times
+        across <b><?= count($archives) ?></b> archives,
         created between
         <b><?php echo end($archives)->Date; reset($archives); ?></b>
         and
