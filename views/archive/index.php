@@ -23,9 +23,9 @@
         Viewed <b><?= $page->totalViewCount() ?></b> times
         across <b><?= count($archives) ?></b> archives,
         created between
-        <b><?php echo end($archives)->Date; reset($archives); ?></b>
+        <b><?php echo explode(' ', end($archives)->Date, 2)[0]; reset($archives); ?></b>
         and
-        <b><?= current($archives)->Date ?></b>
+        <b><?= explode(' ', current($archives)->Date, 2)[0] ?></b>
     </p>
 
     <section id="page-buttons">
