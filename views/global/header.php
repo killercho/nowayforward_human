@@ -5,6 +5,7 @@
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#2b2b2e">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="/styles.css">
     <title><?= htmlspecialchars($title ?? "No Way Forward Human");?></title>
 </head>
