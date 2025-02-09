@@ -40,7 +40,7 @@
 
 <div class="user-blank-afterspace"></div>
 
-<h1>Delete yor account</h1>
+<h1>Delete your account</h1>
 
 <form action="/user/delete" method="GET" class="font-115 flex-col-centered max-width-20 center-margin">
     <input type="hidden" name="username" value="<?= $user->Username ?>">
