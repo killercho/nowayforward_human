@@ -357,7 +357,7 @@ hr.new-section {
 
 [name=itemButton] > *, .item .global-buttons > * {
   display: flex;
-  align-items: end;
+  align-items: center;
   flex: 1;
 }
 
