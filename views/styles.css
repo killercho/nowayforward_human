@@ -514,3 +514,18 @@ hr.new-section {
 #user-nav button:hover {
   filter: none;
 }
+
+/* Archives */
+#page-header {
+  margin-bottom: 2em;
+}
+
+#page-info {
+  text-align: center;
+}
+
+#page-buttons {
+  display: flex;
+  margin: 1em 0 2em 0;
+  gap: 1em;
+}
