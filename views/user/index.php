@@ -44,21 +44,32 @@
     </nav>
     <section id="userArchives">
     <?php
-        foreach ($user->archives() as $page) {
+        $archives = $user->archives();
+        foreach ($archives as $page) {
             include $VIEWS_DIR . '/archive/item.php';
         }
         include_once $VIEWS_DIR . '/archive/item_show.php';
     ?>
+
+    <?php if (count($archives) === 0): ?>
+        <h1>No archives</h1>
+    <?php endif; ?>
     </section>
 
     <section id="userLists" hidden>
     <?php
-        foreach ($user->archiveLists() as $list) {
+        $archiveLists = $user->archiveLists();
+        foreach ($archiveLists as $list) {
             include $VIEWS_DIR . '/list/item.php';
         }
         include_once $VIEWS_DIR . '/list/item_show.php';
     ?>
+
+    <?php if (count($archiveLists) === 0): ?>
+        <h1>No lists</h1>
+    <?php endif; ?>
     </section>
+
 
     <script type="text/javascript">
         const elemOpenArchives = document.getElementById('openArchives');
