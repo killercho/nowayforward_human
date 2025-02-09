@@ -9,34 +9,34 @@
 ?>
 
 <?php if ($user !== null): ?>
-    <section>
+    <section id="user-main">
         <span class="user-icon"><?php $user->icon(); ?></span>
         <h1 class="username"><?= $user->Username ?></h1>
+
+        <section id="user-buttons" hidden>
+            <?php if ($user !== null && $loggedin !== null && $user->UID === $loggedin->UID): ?>
+                <form action="/list/new" method="GET">
+                    <button title="Create a new list" class="standalone-button"><?php include $VIEWS_DIR . '/img/list-add.svg' ?></button>
+                </form>
+                <form action="/user/settings" method="GET">
+                    <button title="Account settings" class="standalone-button"><?php include $VIEWS_DIR . '/img/settings.svg' ?></button>
+                </form>
+                <?php if ($user->Role === 'Admin'): ?>
+                    <form action="/admin" method="GET">
+                        <button title="Global settings" class="standalone-button"><?php include $VIEWS_DIR . '/img/global-settings.svg' ?></button>
+                    </form>
+                <?php endif; ?>
+            <?php endif; ?>
+        </section>
+        <script type="text/javascript">
+            function showUserButtons() {
+                document.getElementById('user-buttons').hidden = false;
+            }
+            authenticated(showUserButtons);
+        </script>
     </section>
 
     <div class="user-blank-afterspace"></div>
-
-    <section id="user-buttons" hidden>
-        <?php if ($user !== null && $loggedin !== null && $user->UID === $loggedin->UID): ?>
-            <form action="/list/new" method="GET">
-                <input type="submit" value="Create a new list">
-            </form>
-            <form action="/user/settings" method="GET">
-                <input type="submit" value="Account settings">
-            </form>
-            <?php if ($user->Role === 'Admin'): ?>
-                <form action="/admin" method="GET">
-                    <input type="submit" value="Admin panel">
-                </form>
-            <?php endif; ?>
-        <?php endif; ?>
-    </section>
-    <script type="text/javascript">
-        function showUserButtons() {
-            document.getElementById('user-buttons').hidden = false;
-        }
-        authenticated(showUserButtons);
-    </script>
 
     <nav id="user-nav">
         <button id="openArchives" onclick="openArchives()">Archives</button>

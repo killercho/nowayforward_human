@@ -449,18 +449,44 @@ hr.new-section {
   height: 4em;
 }
 
+#user-main {
+  display: flex;
+  gap: 1em;
+}
+
+#user-main > * {
+  text-align: unset;
+}
+
+#user-main > :nth-child(2) {
+  flex: 1;
+}
+
 #user-buttons {
   margin: 0 1em 2em 1em;
   display: flex;
-  flex-direction: row;
-  gap: 1em;
+  flex-direction: column;
+  gap: 0.5em;
+  float: right;
+}
+
+.standalone-button {
+  border: none;
+  box-shadow: none;
+}
+
+.standalone-button svg {
+  height: 1.5em;
+  vertical-align: middle;
 }
 
 #user-nav {
   display: flex;
   flex-direction: row;
   gap: 1em;
+  margin-left: -1em;
   margin-bottom: 2em;
+  width: calc(100% + 2em);
 }
 
 #user-nav button {
