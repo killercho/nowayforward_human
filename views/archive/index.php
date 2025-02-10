@@ -9,8 +9,8 @@
         normalizeUrl($url);
 
         $page = Database\Webpage::fromDB($url);
-        $user = Database\Cookie::fromDB($TOKEN);
         $archives = $page->allArchives();
+        $user = Database\Cookie::fromDB($TOKEN);
     }
     catch(Exception $e) {
     }
