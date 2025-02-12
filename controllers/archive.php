@@ -200,6 +200,11 @@ class DownloadPage {
             $sourceContent = $this->downloadFile($currentLink);
             if ($sourceContent) {
                 $resourceName = basename($currentName);
+                $resourceName = str_replace(
+                    ['/', '\\', '?', '*', '|', ':', '"', "'", '=', '<', '>'],
+                    '',
+                    $resourceName
+                );
                 $folder_path = $this->folder_location . '/' . $this->folder_name;
                 $file = fopen($folder_path . '/' .  $resourceName, "w");
                 if ($file){
@@ -313,6 +318,11 @@ class DownloadPage {
                 if ($this->isResourceAccessible($url)) {
                     // Get the file name and local path
                     $file_name = basename($url);
+                    $file_name = str_replace(
+                        ['/', '\\', '?', '*', '|', ':', '"', "'", '=', '<', '>'],
+                        '',
+                        $file_name
+                    );
                     $file_path = './' . $file_name;
                     $folder_path = $this->folder_location . '/' . $this->folder_name;
                     $urlContents = $this->downloadFile($url);
@@ -345,6 +355,11 @@ class DownloadPage {
                 if ($this->isResourceAccessible($url)) {
                     // Get the file name and local path
                     $file_name = basename($url);
+                    $file_name = str_replace(
+                        ['/', '\\', '?', '*', '|', ':', '"', "'", '=', '<', '>'],
+                        '',
+                        $file_name
+                    );
                     $file_path = './' . $file_name;
                     $folder_path = $this->folder_location . '/' . $this->folder_name;
                     $urlContents = $this->downloadFile($url);
@@ -387,6 +402,11 @@ class DownloadPage {
                             // the same as the resource that is needed thus not actually needing to download it
                             foreach($simular_pages as $page) {
                                 $resourceName = basename($source);
+                                $resourceName = str_replace(
+                                    ['/', '\\', '?', '*', '|', ':', '"', "'", '=', '<', '>'],
+                                    '',
+                                    $resourceName
+                                );
                                 if (!file_exists($this->folder_location . "/" . $page->WID . "/" . $resourceName)) {
                                     continue;
                                 }
@@ -410,6 +430,11 @@ class DownloadPage {
                         if (!$found_resource) {
                             // Page is unique so there will be no resource that can be cached
                             $resourceName = basename($source);
+                            $resourceName = str_replace(
+                                ['/', '\\', '?', '*', '|', ':', '"', "'", '=', '<', '>'],
+                                '',
+                                $resourceName
+                            );
                             $link->setAttribute($attribute, './' . $resourceName);
                             $file = fopen($folder_path . '/' .  $resourceName, "w");
                             if ($file){
