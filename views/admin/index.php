@@ -39,21 +39,51 @@
 
     <h2>Archive queue</h2>
 
+    <section>
     <button id="manual-start">Start worker manually</button>
+    <span id="start-msg"></span>
     <script type="text/javascript">
         document.getElementById('manual-start').onclick = function() {
             var request = new XMLHttpRequest();
             request.onreadystatechange = function() {
                 if (request.readyState < 4) return;
 
-                console.log(request.responseText);
+                document.getElementById('start-msg').innerText = 'Response: ' + request.responseText;
             }
             request.open("POST", "/archive/create", true);
             request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             request.withCredentials = true;
             request.send('async=true&url=localhost&manual=true');
+            document.getElementById('start-msg').innerText = 'Sent! If you see this for a long time, worker is archiving.';
         }
     </script>
+    </section>
+
+    <p></p>
+
+    <section>
+    <button id="clear">Clear worker queue</button>
+    <span id="clear-msg"></span>
+    <script type="text/javascript">
+        document.getElementById('clear').onclick = function() {
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function() {
+                if (request.readyState < 4) return;
+
+                if (request.status === 200) {
+                    document.getElementById('clear-msg').innerText = 'Done!';
+                }
+                else {
+                    document.getElementById('clear-msg').innerText = 'Error: ' + request.responseText;
+                }
+            }
+            request.open("POST", "/archive/clear_queue.php", true);
+            request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            request.withCredentials = true;
+            request.send(null);
+        }
+    </script>
+    </section>
 
 <?php else: ?>
     <h2>Permission denied, you're not an admin!</h2>
