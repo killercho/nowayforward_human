@@ -3,6 +3,8 @@ namespace Database;
 use PDO;
 use Exception;
 
+include __DIR__ . '/../constants.php';
+
 abstract class Table {
     // Cannot be created, because FETCH_CLASS will assign to all attributes
     // and then call the constructor
@@ -62,20 +64,27 @@ abstract class Table {
     }
 
     static protected function connect() : PDO {
-        $unix_socket = getenv('MYSQL_UNIX_SOCKET');
+        global $SERVER;
+        global $PORT;
+        global $USER;
+        global $PASSWORD;
+        global $DB_NAME;
+        global $MYSQL_UNIX_SOCKET;
+
+        $unix_socket = $MYSQL_UNIX_SOCKET;
         $conn = null;
         // Windows support
         if ($unix_socket == '') {
             $conn = new PDO(
-                "mysql:host=" . getenv('SERVER') . ";port=" . getenv('PORT') . ";dbname=nwfh",
-                getenv('USER'),
-                getenv('PASSWORD'));
+                "mysql:host=" . $SERVER . ";port=" . $PORT . ";dbname=" . $DB_NAME,
+                $USER,
+                $PASSWORD);
         }
         else {
             $conn = new PDO(
-                "mysql:unix_socket=$unix_socket;dbname=nwfh",
-                getenv('USER'),
-                getenv('PASSWORD'));
+                "mysql:unix_socket=$unix_socket;dbname=" . $DB_NAME,
+                $USER,
+                $PASSWORD);
         }
         // set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

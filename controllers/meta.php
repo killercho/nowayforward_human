@@ -1,5 +1,7 @@
 <?php
 
+include_once __DIR__ . '/../constants.php';
+
 function call_handler(string $name) {
     if (function_exists($name)) {
         call_user_func($name);

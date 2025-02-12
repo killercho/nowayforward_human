@@ -11,10 +11,11 @@
     catch (Exception $e) {}
 
     function createWithDOMPDF() {
+        global $ARCHIVES_DIR;
         $url = $_GET['url'];
         $title = $_GET['title'];
         $wid = $_GET['wid'];
-        $archive_dir = getenv('ARCHIVES_DIR') . '/' . $wid;
+        $archive_dir = $ARCHIVES_DIR . '/' . $wid;
         $html = file_get_contents($archive_dir . '/index.php');
 
         $dompdf = new Dompdf();

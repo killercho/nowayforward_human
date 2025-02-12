@@ -1,5 +1,7 @@
 <?php
 
+include __DIR__ . '/../../constants.php';
+
 $VIEWS_DIR = __DIR__ . '/..';
 $CONTROLLERS_DIR = __DIR__ . '/../../controllers';
 $MODELS_DIR = __DIR__ . '/../../models';

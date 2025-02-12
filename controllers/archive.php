@@ -10,6 +10,7 @@ use ValueError;
 set_time_limit(300);
 
 function on_post() {
+    global $ARCHIVES_DIR;
     if (!array_key_exists('async', $_POST) || $_POST['async'] !== 'true') {
         return;
     }
@@ -19,7 +20,7 @@ function on_post() {
     global $TOKEN;
 
     $WEBSITE_CATEGORY = 'url';
-    $DOWNLOADS_FOLDER = getenv('ARCHIVES_DIR');
+    $DOWNLOADS_FOLDER = $ARCHIVES_DIR;
     $website_url = htmlspecialchars($_POST[$WEBSITE_CATEGORY]);
     $uid = 1;
     $authorized = false;
