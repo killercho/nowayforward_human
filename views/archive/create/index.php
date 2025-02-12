@@ -37,7 +37,7 @@ function updatePosition(url) {
         }
 
         let pos = queuePos - request.responseText;
-        if (pos === NaN) {
+        if (pos == NaN || pos === 'NaN') {
             position.innerText = 'Archival timeouted! Archive is incomplete!';
         }
         else {
